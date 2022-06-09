@@ -46,8 +46,8 @@ bool TreeReaderDemo::Execute(){
 	// ----------------------------------------
 	
 	// run and subrun number
-	std::cout<<std::endl<<"Event "<<myTreeReader->GetEntryNumber()
-			 <<" was from run "<<header->nrunsk<<", subrun "<<header->nsubsk<<std::endl;
+//	std::cout<<std::endl<<"Event "<<myTreeReader->GetEntryNumber()
+//			 <<" was from run "<<header->nrunsk<<", subrun "<<header->nsubsk<<std::endl;
 	
 	// event time and date
 	tm rundate = {0};
@@ -60,27 +60,31 @@ bool TreeReaderDemo::Execute(){
 	time_t runtime = mktime(&rundate);         // need to use mktime to derive day of week
 	std::string timestring = ctime(&runtime);  // format timestamp into a string
 	timestring.pop_back();                     // drop trailing newline
-	std::cout<<"The event occurred at "<<timestring<<std::endl;
+//	std::cout<<"The event occurred at "<<timestring<<std::endl;
 	
 	// total hits and charge
 	double total_charge = std::accumulate(tqreal->Q.begin(),tqreal->Q.end(),0);
-	std::cout<<"The event saw "<<tqreal->nhits
-			 <<" PMTs hit with a total charge of "<<total_charge<<" nC"<<std::endl;
+//	std::cout<<"The event saw "<<tqreal->nhits
+//			 <<" PMTs hit with a total charge of "<<total_charge<<" nC"<<std::endl;
 	
-	bool has_secondary_info = myTreeReader->Get("SECONDARY",secondaries);
-	if(has_secondary_info){
-		std::cout<<"calling secondary print"<<std::endl;
-		secondaries->Print();
-	} else {
-		Log(toolName+" No SECONDARY branch - cannot print secondary information at this time.",v_debug,verbosity);
+	// added check for branch before trying to "Get" it as when the SECONDARY branch is not present this causes
+	// warning printouts for some events.
+	if(myTreeReader->GetTree()->FindBranch("SECONDARY")){
+		bool has_secondary_info = myTreeReader->Get("SECONDARY",secondaries);
+		if(has_secondary_info){
+	//		std::cout<<"calling secondary print"<<std::endl;
+	//		secondaries->Print();
+		} else {
+			Log(toolName+" No SECONDARY branch - cannot print secondary information at this time.",v_debug,verbosity);
+		}
 	}
 	
 	// reconstructed energy and vertex
-	std::cout<<"Low-E reconstruction indicated an energy of "<<loweinfo->bsenergy<<" MeV"<<std::endl;
+//	std::cout<<"Low-E reconstruction indicated an energy of "<<loweinfo->bsenergy<<" MeV"<<std::endl;
 	basic_array<float> bsvertex(loweinfo->bsvertex);
-	std::cout<<"with a primary vertex at {X,Y,Z,T} = {";
-	for(auto&& vtxcomp : bsvertex){ std::cout<<vtxcomp<<", "; };
-	std::cout<<"\b\b}"<<std::endl;
+//	std::cout<<"with a primary vertex at {X,Y,Z,T} = {";
+//	for(auto&& vtxcomp : bsvertex){ std::cout<<vtxcomp<<", "; };
+//	std::cout<<"\b\b}"<<std::endl;
 	
 	return true;
 }

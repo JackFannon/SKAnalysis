@@ -46,6 +46,17 @@ extern "C" void skcread_(int*, int*);
 extern "C" void skroot_set_tree_(int*);
 extern "C" void skroot_get_entry_(int*);
 
+extern "C" int softtrg_inittrgtbl_(int*, int*, int*,int*);
+extern "C" int softtrg_inittrgtbl(int , int, int, int);
+
+extern "C" void fix_maxqisk_();
+extern "C" void lfmufit_sk4_();
+
+extern "C" void newmufit_(float (*)[3], float (*)[3], float*);
+
+extern "C" void makededx_(float (*)[4], float (*)[3], int (*)[11146], float (*)[11146], float (*)[11146], float (*)[11146][3], int*, int*, float*, int (*)[255]);
+extern "C" void makededx_intg_(float (*)[4], float (*)[3], float*, int (*)[11146], float (*)[11146], float (*)[11146], float (*)[11146][3], int*, int*, float (*)[200], int (*)[334380], int*);
+
 // from $ATMPD_ROOT/src/programs/TreeBuilder/examples/fort_fopen.F
 extern "C" void fort_fopen_(int*, const char*, char*, int* ,int);
 
@@ -53,6 +64,8 @@ extern "C" void fort_fopen_(int*, const char*, char*, int* ,int);
 extern "C" void runinfsk_();
 
 //
+
+extern "C" void softtrg_get_cond_(int*, int*, int*, int*, int*);
 extern "C" void softtrg_set_cond_(int*, int*, int*, int*, int*);
 extern "C" void get_sub_triggers_(int*, int*, int*, int*);
 extern "C" void set_timing_gate_(int*);
