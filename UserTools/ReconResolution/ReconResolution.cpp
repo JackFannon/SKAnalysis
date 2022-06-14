@@ -166,8 +166,8 @@ std::vector<std::vector<float>> ReconResolution::calcVertexDifference(MTreeReade
 	// calculate and print the difference between the MC vector and the reconstructed vector
 	float vertTotDiff =0.;
 	for(int i = 0; i < 3; i++){
-		//std::cout << "RECON VERTEX: "<< reconVertex[i] << " MC VERTEX: " << myMC->pvtxvc[0][i+3] << std::endl;
-		vertTotDiff += pow((reconVertex[i]-myMC->pvtxvc[0][i+3]), 2);
+		//std::cout << "RECON VERTEX: "<< reconVertex[i] << " MC VERTEX: " << myMC->pvtxvc[0][i] << std::endl;
+		vertTotDiff += pow((reconVertex[i]-myMC->pvtxvc[0][i]), 2);
 	}
 	
 	// calculate the absolute difference between the vertices

@@ -688,7 +688,7 @@ bool evDisp::Execute(){
 	runNum = 0;
 	subrunNum = 0;
 	eventNum = 0;
-	triggerID = nullptr;
+	triggerID = 0;
 	readoutT0 = 0;
 	gateWidth = 0;
 	if(dataSrc==1){
