@@ -115,16 +115,16 @@ class DataModel {
   
   //flag for a new relic candidate - used for the spallation reduction
   bool newRelic = false;
+
+  //vector for relic candidate events that needs to be written out - used for the spallation reduction
+  std::vector<int> writeOutRelics;
   
-  //flag for a muon candidate that is within 30s of a relic candidate
-  std::vector<int> matchedMuonEntryNums;
-  
-  //vector for events that needs to be written out - used for the spallation reduction
-  std::vector<int> writeOut;
-  
-  //deques of the struct ParticleCand to store event info of muon candidates and relic candidates
+  //deques of the struct ParticleCand to store event info of ALL muon candidates and relic candidates
   std::deque<ParticleCand> muonCandDeque;
   std::deque<ParticleCand> relicCandDeque;
+  
+  //deque for muons that need to be reconstructed (if they have matched to a relic they need to be reconstructed)
+  std::deque<ParticleCand> muonsToRec;
 
  private:
 

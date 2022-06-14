@@ -19,7 +19,7 @@ bool ReconstructMatchedMuons::Initialise(std::string configfile, DataModel &data
 	if(!m_variables.Get("verbose",m_verbose)) m_verbose=1;
 	
 	m_variables.Get("treeReaderName", treeReaderName);
-	
+
 	if(m_data->Trees.count(treeReaderName)==0){
 	Log("Failed to find TreeReader "+treeReaderName+" in DataModel!",v_error,verbosity);
 	return false;
@@ -27,14 +27,14 @@ bool ReconstructMatchedMuons::Initialise(std::string configfile, DataModel &data
 		myTreeReader = m_data->Trees.at(treeReaderName);
 	}
 	
-	muonsToRec = m_data->muonCandDeque;
+	muonsToRec = m_data->muonsToRec;
 	
 	return true;
 }
 
 
 bool ReconstructMatchedMuons::Execute(){
-	if(! m_data->matchedMuonEntryNums.size()) return true;
+	if(! muonsToRec.size()) return true;
 	
 	myTreeReader->Get("HEADER", myHeader);
 	
@@ -108,9 +108,6 @@ bool ReconstructMatchedMuons::Execute(){
 		
 		
 	}
-	
-	//empty matchedMuonEntryNums vector in the DataModel so that events are not being reconstructed twice
-	m_data->matchedMuonEntryNums.clear();
 	
 	//return the previous entry so that no issues are caused with other tools
 	if(currentEntry != myTreeReader->GetEntryNumber()){
