@@ -1,0 +1,3 @@
+inputName ./rootFiles/lowe_skdetsim.r628.root
+outputName ./testSpallTMVA.root
+outputTreeName signalTree
