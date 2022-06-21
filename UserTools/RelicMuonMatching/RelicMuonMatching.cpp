@@ -109,8 +109,8 @@ unsigned long long int RelicMuonMatching::bitshiftTime(unsigned long long int t0
 }*/
 
 bool RelicMuonMatching::RelicMuonMatch(std::string particleType, std::deque<ParticleCand>& currentDeque, std::deque<ParticleCand>& targetDeque){
-	m_data->vars.Set(particleType, false);
 	unsigned long long int currentTime = bitshiftTime(skheadqb_.it0xsk, skheadqb_.nevhwsk);
+	std::vector<int> particleToRemove;
 	ParticleCand currentParticle;
 	currentParticle.EventNumber = myHeader->nevsk;
 	currentParticle.EventTime = currentTime;
@@ -123,11 +123,16 @@ bool RelicMuonMatching::RelicMuonMatch(std::string particleType, std::deque<Part
 	for(int i = 0; i < targetDeque.size(); i++){
 		//find time to each target candidate (if the event is a muon cand then the target is a relic cand) oldest 
 		//to newest
-		if(currentTime > targetDeque[i].EventTime){
-			timeDiff = (currentTime - targetDeque[i].EventTime)/COUNT_PER_NSEC;
-		}else{
-			timeDiff = ((bitOne << 47) + currentTime - targetDeque[i].EventTime)/COUNT_PER_NSEC;
+		
+		//IT0SK is a counter that runs from 0 - 2^47 and then loops back around to 0. This corresponds to looping
+		//every ~2 seconds (this is very rough). The currenTime must come after whatever time is being checked in
+		//the targetDeque, so if it is found that currentTime is less than the target time then the counter must
+		//have looped and this needs correcting by adding bitOne << 47 to currentTime to shift it back in 'front'
+		//of the target time.
+		if((currentTime - targetDeque[i].EventTime) < 0){
+			currentTime += (bitOne << 47);
 		}
+		timeDiff = (currentTime - targetDeque[i].EventTime)/COUNT_PER_NSEC;
 		if(abs(timeDiff) < 30.){
 			//add the event # of the current event to the target particle's "matched particle" list and add the
 			//if time difference is less than +-30s then the events need investigating to see if they are correlated
@@ -137,22 +142,23 @@ bool RelicMuonMatching::RelicMuonMatch(std::string particleType, std::deque<Part
 			targetDeque[i].matchedParticleEvNum.push_back(currentParticle.EventNumber);
 			targetDeque[i].matchedParticleEne.push_back(currentParticle.ReconEnergy);
 			if(particleType == "newMuon"){
-				m_data->matchedMuonEntryNums.push_back(currentParticle.EntryNumber);
+				m_data->muonsToRec.push_back(currentParticle);
 			}
 			if(particleType == "newRelic" && targetDeque[i].matchedParticleEvNum.size() == 1){
-				m_data->matchedMuonEntryNums.push_back(targetDeque[i].EntryNumber);
+				m_data->muonsToRec.push_back(targetDeque[i]);
 			}
 		}else if(timeDiff > 30.){
-			if(targetDeque[i].matchedParticleEvNum.size()){
+			if(targetDeque[i].matchedParticleEvNum.size() && particleType == "newMuon"){
 				//if the current event comes more than 30 seconds after any of the other events then no other
 				//events can be tagged to it. So check that the older event has been tagged to other events and
 				//set it to be written out.
-				m_data->writeOut.push_back(targetDeque[i].EntryNumber);
+				m_data->writeOutRelics.push_back(targetDeque[i].EntryNumber);
 			}
 			//if it has been tagged to no events then it does not need to be written out and can be removed from
 			//the deque as no more muons/relics will be tagged to it
-			targetDeque.pop_front();
+			particleToRemove.push_back(i);
 		}
 	}
+	m_data->vars.Set(particleType, false);
 	return true;
 }
