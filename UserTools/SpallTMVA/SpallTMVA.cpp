@@ -18,78 +18,72 @@ bool SpallTMVA::Initialise(std::string configfile, DataModel &data){
 	
 	if(!m_variables.Get("verbose",m_verbose)) m_verbose=1;
 	
-	m_variables.Get("fileName", inputName);
+	m_variables.Get("inputName", inputName);
 	m_variables.Get("outputName", outputName);
+	m_variables.Get("outputTreeName", outputTreeName);
 	
-	inputFile = TFile::Open("./rootFiles/lowe_skdetsim.r628.root");
+	inputFile = TFile::Open(inputName.c_str());
 	inputTree = (TTree *)inputFile->Get("data");
 	
-	
-	
-	outputFile = TFile::Open("./testSpallTMVA.root", "RECREATE");
-	TTree* outputTree = new TTree("data", "outputTree");
-	
-	
+	outputFile = TFile::Open(outputName.c_str(), "RECREATE");
+	outputTree = new TTree(outputTreeName.c_str(), outputTreeName.c_str());
 	
 	TBranch* exist = inputTree->FindBranch("LOWE");
 	if(exist){
 		inputTree->SetBranchAddress("LOWE", &LOWE, &lowebranch);
 	}
 	
-	outputTree->Branch("bsvertex", &bsvertex, "bsvertex/I");
-	outputTree->Branch("bsresult", &bsresult, "bsresult/I");
-	outputTree->Branch("bsdir", &bsdir, "bsdir/I");
-	outputTree->Branch("bsgood", &bsgood, "bsgood/I");
-	outputTree->Branch("bsdirks", &bsdirks, "bsdirks/I");
-	outputTree->Branch("bseffhit", &bseffhit, "bseffhit/I");
-	outputTree->Branch("bsenergy", &bsenergy, "bsenergy/I");
-	outputTree->Branch("bsn50", &bsn50, "bsn50/I");
-	outputTree->Branch("bscossun", &bscossun, "bscossun/I");
-	outputTree->Branch("clvertex", &clvertex, "clvertex/I");
-	outputTree->Branch("clresult", &clresult, "clresult/I");
-	outputTree->Branch("cldir", &cldir, "cldir/I");
-	outputTree->Branch("clgoodness", &clgoodness, "clgoodness/I");
-	outputTree->Branch("cldirks", &cldirks, "cldirks/I");
-	outputTree->Branch("cleffhit", &cleffhit, "cleffhit/I");
-	outputTree->Branch("clenergy", &clenergy, "clenergy/I");
-	outputTree->Branch("cln50", &cln50, "cln50/I");
-	outputTree->Branch("clcossun", &clcossun, "clcossun/I");
-	outputTree->Branch("latmnum", &latmnum, "latmnum/I");
-	outputTree->Branch("latmh", &latmh, "latmh/I");
-	outputTree->Branch("lmx24", &lmx24, "lmx24/I");
-	outputTree->Branch("ltimediff", &ltimediff, "ltimediff/I");
-	outputTree->Branch("lnsratio", &lnsratio, "lnsratio/I");
-	outputTree->Branch("lsdir", &lsdir, "lsdir/I");
-	outputTree->Branch("spaevnum", &spaevnum, "spaevnum/I");
-	outputTree->Branch("spaloglike", &spaloglike, "spaloglike/I");
-	outputTree->Branch("sparesq", &sparesq, "sparesq/I");
-	outputTree->Branch("spadt", &spadt, "spadt/I");
-	outputTree->Branch("spadll", &spadll, "spadll/I");
-	outputTree->Branch("spadlt", &spadlt, "spadlt/I");
-	outputTree->Branch("spamuyn", &spamuyn, "spamuyn/I");
-	outputTree->Branch("spamugdn", &spamugdn, "spamugdn/I");
-	outputTree->Branch("posmc", &posmc, "posmc/I");
-	outputTree->Branch("dirmc", &dirmc, "dirmc/I");
-	outputTree->Branch("pabsmc", &pabsmc, "pabsmc/I");
-	outputTree->Branch("energymc", &energymc, "energymc/I");
-	outputTree->Branch("darkmc", &darkmc, "darkmc/I");
-	outputTree->Branch("islekeep", &islekeep, "islekeep/I");
-	outputTree->Branch("bspatlik", &bspatlik, "bspatlik/I");
-	outputTree->Branch("clpatlik", &clpatlik, "clpatlik/I");
-	outputTree->Branch("lwatert", &lwatert, "lwatert/I");
-	outputTree->Branch("lninfo", &lninfo, "lninfo/I");
+	outputTree->Branch("bsvertex", &bsvertex, "bsvertex[4]/F");
+	outputTree->Branch("bsresult", &bsresult, "bsresult/F");
+	outputTree->Branch("bsdir", &bsdir, "bsdir[3]/F");
+	outputTree->Branch("bsgood", &bsgood, "bsgood/F");
+	outputTree->Branch("bsdirks", &bsdirks, "bsdirks/F");
+	outputTree->Branch("bseffhit", &bseffhit, "bseffhit/F");
+	outputTree->Branch("bsenergy", &bsenergy, "bsenergy/F");
+	outputTree->Branch("bsn50", &bsn50, "bsn50/F");
+	outputTree->Branch("bscossun", &bscossun, "bscossun/F");
+	outputTree->Branch("clvertex", &clvertex, "clvertex[4]/F");
+	outputTree->Branch("clresult", &clresult, "clresult/F");
+	outputTree->Branch("cldir", &cldir, "cldir[3]/F");
+	outputTree->Branch("clgoodness", &clgoodness, "clgoodness/F");
+	outputTree->Branch("cldirks", &cldirks, "cldirks/F");
+	outputTree->Branch("cleffhit", &cleffhit, "cleffhit/F");
+	outputTree->Branch("clenergy", &clenergy, "clenergy/F");
+	outputTree->Branch("cln50", &cln50, "cln50/F");
+	outputTree->Branch("clcossun", &clcossun, "clcossun/F");
+	outputTree->Branch("latmnum", &latmnum, "latmnum/F");
+	outputTree->Branch("latmh", &latmh, "latmh/F");
+	outputTree->Branch("lmx24", &lmx24, "lmx24/F");
+	outputTree->Branch("ltimediff", &ltimediff, "ltimediff/F");
+	outputTree->Branch("lnsratio", &lnsratio, "lnsratio/F");
+	outputTree->Branch("lsdir", &lsdir, "lsdir/F");
+	outputTree->Branch("spaevnum", &spaevnum, "spaevnum/F");
+	outputTree->Branch("spaloglike", &spaloglike, "spaloglike/F");
+	outputTree->Branch("sparesq", &sparesq, "sparesq/F");
+	outputTree->Branch("spadt", &spadt, "spadt/F");
+	outputTree->Branch("spadll", &spadll, "spadll/F");
+	outputTree->Branch("spadlt", &spadlt, "spadlt/F");
+	outputTree->Branch("spamuyn", &spamuyn, "spamuyn/F");
+	outputTree->Branch("spamugdn", &spamugdn, "spamugdn/F");
+	outputTree->Branch("posmc", &posmc, "posmc/F");
+	outputTree->Branch("dirmc", &dirmc, "dirmc/F");
+	outputTree->Branch("pabsmc", &pabsmc, "pabsmc/F");
+	outputTree->Branch("energymc", &energymc, "energymc/F");
+	outputTree->Branch("darkmc", &darkmc, "darkmc/F");
+	outputTree->Branch("islekeep", &islekeep, "islekeep/F");
+	outputTree->Branch("bspatlik", &bspatlik, "bspatlik/F");
+	outputTree->Branch("clpatlik", &clpatlik, "clpatlik/F");
+	outputTree->Branch("lwatert", &lwatert, "lwatert/F");
+	outputTree->Branch("lninfo", &lninfo, "lninfo/F");
 	
-	numofEntries = outputTree->GetEntries();
-	
+	numofEntries = inputTree->GetEntries();
 	return true;
 }
 
 
 bool SpallTMVA::Execute(){
 	
-	int entryNum;
-	
-	outputTree->GetEntry(entryNum);
+	inputTree->GetEntry(entryNum);
 	
 	std::copy(std::begin(LOWE->bsvertex), std::end(LOWE->bsvertex), bsvertex);
 	std::copy(std::begin(LOWE->bsresult), std::end(LOWE->bsresult), bsresult);
@@ -102,7 +96,7 @@ bool SpallTMVA::Execute(){
 	bscossun = LOWE->bscossun;
 	std::copy(std::begin(LOWE->clvertex), std::end(LOWE->clvertex), clvertex);
 	std::copy(std::begin(LOWE->clresult), std::end(LOWE->clresult), clresult);
-	std::copy(std::begin(LOWE->cldir),    std::end(LOWE->cldir), cldir);
+	std::copy(std::begin(LOWE->cldir),    std::end(LOWE->cldir),    cldir);
 	clgoodness = LOWE->clgoodness;
 	cldirks = LOWE->cldirks;
 	std::copy(std::begin(LOWE->cleffhit), std::end(LOWE->cleffhit), cleffhit);
@@ -114,7 +108,7 @@ bool SpallTMVA::Execute(){
 	lmx24 = LOWE->lmx24;
 	ltimediff = LOWE->ltimediff;
 	lnsratio = LOWE->lnsratio;
-	std::copy(std::begin(LOWE->lsdir), std::end(LOWE->lsdir), lsdir);
+	std::copy(std::begin(LOWE->lsdir),    std::end(LOWE->lsdir),    lsdir);
 	spaevnum = LOWE->spaevnum;
 	spaloglike = LOWE->spaloglike;
 	sparesq = LOWE->sparesq;
@@ -123,9 +117,9 @@ bool SpallTMVA::Execute(){
 	spadlt = LOWE->spadlt;
 	spamuyn = LOWE->spamuyn;
 	spamugdn = LOWE->spamugdn;
-	std::copy(std::begin(LOWE->posmc), std::end(LOWE->posmc), posmc);
-	std::copy(std::begin(LOWE->dirmc), std::end(LOWE->dirmc), dirmc);
-	std::copy(std::begin(LOWE->pabsmc), std::end(LOWE->pabsmc), pabsmc);
+	std::copy(std::begin(LOWE->posmc),    std::end(LOWE->posmc),    posmc);
+	std::copy(std::begin(LOWE->dirmc),    std::end(LOWE->dirmc),    dirmc);
+	std::copy(std::begin(LOWE->pabsmc),   std::end(LOWE->pabsmc),   pabsmc);
 	std::copy(std::begin(LOWE->energymc), std::end(LOWE->energymc), energymc);
 	darkmc = LOWE->darkmc;
 	islekeep = LOWE->islekeep;
@@ -133,7 +127,7 @@ bool SpallTMVA::Execute(){
 	clpatlik = LOWE->clpatlik;
 	lwatert = LOWE->lwatert;
 	lninfo = LOWE->lninfo;
-	std::copy(std::begin(LOWE->linfo), std::end(LOWE->linfo), linfo);
+	std::copy(std::begin(LOWE->linfo),    std::end(LOWE->linfo),    linfo);
 	
 	outputTree->Fill();
 	
@@ -149,7 +143,10 @@ bool SpallTMVA::Execute(){
 
 bool SpallTMVA::Finalise(){
 	
+	inputFile->Close();
+	
 	outputTree->Write();
+	outputFile->Close();
 	
 	return true;
 }

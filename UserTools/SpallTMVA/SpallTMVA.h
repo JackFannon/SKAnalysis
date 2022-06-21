@@ -12,14 +12,13 @@
 /**
  * \class SpallTMVA
  *
- * This is a balnk template for a Tool used by the script to generate a new custom tool. Please fill out the descripton and author information.
-*
-* $Author: B.Richards $
-* $Date: 2019/05/28 10:44:00 $
+ *
+ *
+ * $Author: J.Fannon $
+ * $Date: 2022/06/20 10:00:00 $
 */
 
 class SpallTMVA: public Tool {
-	
 	
 	public:
 	
@@ -28,22 +27,24 @@ class SpallTMVA: public Tool {
 	bool Execute(); ///< Executre function used to perform Tool perpose. 
 	bool Finalise(); ///< Finalise funciton used to clean up resorces.
 	
-	
 	private:
 	
-	std::map<std::string, float> varContainer;
 	std::string inputName;
 	std::string outputName;
+	
+	std::string outputTreeName;
 	
 	TFile* inputFile;
 	TTree* inputTree;
 	
 	TTree* outputTree;
+	
 	TFile* outputFile;
 	
 	LoweInfo* LOWE;
 	TBranch* lowebranch;
 	
+	int entryNum;
 	int numofEntries;
 	
 	float  bsvertex[4];    // bonsai fit
