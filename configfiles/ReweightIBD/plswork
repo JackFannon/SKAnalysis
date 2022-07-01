@@ -1,0 +1,2 @@
+inputName ../sk6_relic_ana/mc_sim/ibd/flat/IBD_MC_1.root
+outputName reweightedFile.root
