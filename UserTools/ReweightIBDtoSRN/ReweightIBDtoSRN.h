@@ -62,15 +62,13 @@ class ReweightIBDtoSRN: public Tool {
 	int m_verbose;
 	int v_error = 0;
 	
-	const char *modelsPath="./UserTools/ReweightIBDtoSRN/FluxModels/";
+	const char *modelsPath="./FluxModels/";
 	const char *ext=".cc";
 	std::vector<const char*> modelNames;
 	std::vector <int> nBins_all;
 	std::vector<float> binWidth_all;
 	std::vector<float> minE_all;
 	double* fluxValues[100];
-	TSystemDirectory* modelsDir = new TSystemDirectory(modelsPath, modelsPath);
-	TList *modelList = modelsDir->GetListOfFiles();
 	
 	float protonsPerKton = pow(6.67, 31);
 	float fiducial = 22.5;

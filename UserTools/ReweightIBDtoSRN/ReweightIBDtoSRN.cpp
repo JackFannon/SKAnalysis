@@ -5,6 +5,8 @@
 ReweightIBDtoSRN::ReweightIBDtoSRN():Tool(){}
 
 bool ReweightIBDtoSRN::Initialise(std::string configfile, DataModel &data){
+	
+	std::cout << configfile << std::endl;
 	if(configfile!="")  m_variables.Initialise(configfile);
 	//m_variables.Print();
 	
@@ -25,6 +27,9 @@ bool ReweightIBDtoSRN::Initialise(std::string configfile, DataModel &data){
 	if(exist){
 		inputTree->SetBranchAddress("mc", &MC, &mcbranch);
 	}
+	
+	TSystemDirectory* modelsDir = new TSystemDirectory(modelsPath, modelsPath);
+	TList *modelList = modelsDir->GetListOfFiles();
 	
 	//read in SRN model fluxes
 	if(!modelList){
