@@ -47,6 +47,5 @@
 #include "ODCut.h"
 #include "RelicMuonMatching.h"
 #include "ReconstructMatchedMuons.h"
-#include "WriteMuonCand.h"
-#include "reweightIBDtoRelics.h"
-#include "reweightIBDtoRelics.h"
+#include "WriteSpallCand.h"
+#include "ReweightIBDtoSRN.h"
