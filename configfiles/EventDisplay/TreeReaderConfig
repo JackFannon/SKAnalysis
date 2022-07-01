@@ -9,7 +9,9 @@ verbosity 1
 
 #inputFile ./rootFiles/data/sk4/061525/lowe_rfm_run061525.000002.root
 
-inputFile ./../skdetsim/spall_220000_230000.root
+#inputFile ./../skdetsim/spall_220000_230000.root
+
+inputFile ./lowe_spallMC.root
 
 #inputFile ./rootFiles/SKDETSIM/Recon/skdetsim.lowfit.r61945.1.mcfit.root
 
