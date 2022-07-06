@@ -127,7 +127,10 @@ class DataModel {
   std::deque<ParticleCand> muonsToRec;
   
   //vector to store weightings in from various SRN models at energy intervals of 0.5 MeV.
-  std::vector<float> SRNWeights;
+  std::vector<std::vector<float>> SRNWeights;
+  
+  //vector to store modelNames for the SRN Models in
+  std::vector<std::string> SRNModelNames;
   
  private:
 

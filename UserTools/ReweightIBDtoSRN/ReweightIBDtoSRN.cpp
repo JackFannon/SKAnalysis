@@ -59,17 +59,18 @@ bool ReweightIBDtoSRN::Initialise(std::string configfile, DataModel &data){
 		}
 	}
 	
-	for(int i = 0; i < modelNames.size(); i++){
-		std::cout << "Look at me " << modelNames[i] << std::endl;
-	}
-	
-	//TFile* outputFile = new TFile(outputName.c_str(), "RECREATE");
 	outputTree = inputTree->CloneTree(0);
 	
 	numofEntries = inputTree->GetEntries();
 	for(int i = 0; i < modelNames.size(); i++){
 		outputTree->Branch(Form("weight_%s", modelNames[i].c_str()), &weightedFlux[i], Form("weight_%s/F", modelNames[i].c_str()));
-		}
+		std::vector<float> modelWeight;
+		m_data->SRNWeights.push_back(modelWeight);
+	}
+	
+	for(float i=0; i < 90; i+=0.5){
+		avCosTheta.push_back(0);
+	}
 	
 	return true;
 }
@@ -85,6 +86,14 @@ bool ReweightIBDtoSRN::Execute(){
 	neutP = sqrt(pow(MC->pvc[2][0], 2) + pow(MC->pvc[2][1], 2) + pow(MC->pvc[2][2], 2));
 	posiP = sqrt(pow(MC->pvc[1][0], 2) + pow(MC->pvc[1][1], 2) + pow(MC->pvc[1][2], 2));
 	cosTheta = (MC->pvc[1][0] * MC->pvc[2][0] + MC->pvc[1][1] * MC->pvc[2][1] + MC->pvc[1][2] * MC->pvc[2][2])/(neutP * posiP);
+	
+	for(float i = 0; i < 180; i++){
+		if(neutP > i/2 && neutP < (i+1)/2){
+			float tempCTheta = (cosTheta + avCosTheta[i])/2.0;
+			avCosTheta[i] = tempCTheta;
+		}
+	}
+	
 	for(int modelIndex; modelIndex < modelNames.size(); modelIndex++){
 		float wFlux = weight_enu(neutP, cosTheta, minE_all[modelIndex], binWidth_all[modelIndex], nBins_all[modelIndex], flux_all[modelIndex]);
 		weightedFlux[modelIndex] = wFlux;
@@ -96,9 +105,6 @@ bool ReweightIBDtoSRN::Execute(){
 	
 	if(entryNum >= numofEntries){
 		m_data->vars.Set("StopLoop", true);
-		outputFile->Write();
-		outputFile->Close();
-		inputFile->Close();
 	}
 	
 	return true;
@@ -106,7 +112,21 @@ bool ReweightIBDtoSRN::Execute(){
 
 
 bool ReweightIBDtoSRN::Finalise(){
+	for(int modelIndex; modelIndex < modelNames.size(); modelIndex++){
+		m_data->SRNModelNames.push_back(modelNames[modelIndex]);
+		for(int ene = 0; ene < 180; ene++){
+			m_data->SRNWeights[modelIndex].push_back(weight_enu(ene/2, avCosTheta[ene], minE_all[modelIndex], binWidth_all[modelIndex], nBins_all[modelIndex], flux_all[modelIndex]));
+		}
+	}
+	for(int i = 0; i < m_data->SRNWeights.size(); i++){
+		for(int j = 0; j < m_data->SRNWeights[i].size(); j++){
+			std::cout << "Model: " << modelNames[i] << " Energy: " << j/2 << " Weighting: " << m_data->SRNWeights[i][j] << std::endl;
+		}
+	}
 	
+	outputFile->Write();
+	outputFile->Close();
+	inputFile->Close();
 	return true;
 }
 
@@ -147,9 +167,7 @@ float ReweightIBDtoSRN::weight_enu(float truthE, float ctheta, float minE, float
 	float yup = flux[binNum + 1];
 	float spec = yup * residual + yminE * (1 - residual);
 	float weightFlux = spec * dsigma_sv(truthE, ctheta) * protonsPerKton * fiducial * 3600 * 24 * 2790.1;
-	if(weightFlux > 100){
-		std::cout << "resi: " << residual << " yminE: " << yminE << " yup: " << yup << " spec: " << spec << " weightFlux: " << weightFlux << " truthE: " << truthE << std::endl;
-		}
+	
 	return weightFlux;
 }
 

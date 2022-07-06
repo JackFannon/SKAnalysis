@@ -72,6 +72,8 @@ class ReweightIBDtoSRN: public Tool {
 	
 	float weightedFlux[11];
 	
+	std::vector<float> avCosTheta;
+	
 	double dsigma_sv(float enu, double costheta);
 	bool Read_Flux(const char* fileName, float &minE, float &binWidth, int &nBins, std::vector<float> &flux);
 	float weight_enu(float truthE, float ctheta, float minE, float binWidth, int nbins, std::vector<float> flux);

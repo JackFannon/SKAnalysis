@@ -49,3 +49,4 @@
 #include "ReconstructMatchedMuons.h"
 #include "WriteSpallCand.h"
 #include "ReweightIBDtoSRN.h"
+#include "ApplySRNWeight.h"
