@@ -125,7 +125,10 @@ class DataModel {
   
   //deque for muons that need to be reconstructed (if they have matched to a relic they need to be reconstructed)
   std::deque<ParticleCand> muonsToRec;
-
+  
+  //vector to store weightings in from various SRN models at energy intervals of 0.5 MeV.
+  std::vector<float> SRNWeights;
+  
  private:
 
 

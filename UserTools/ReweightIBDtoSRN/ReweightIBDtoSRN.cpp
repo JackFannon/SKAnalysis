@@ -1,5 +1,6 @@
 #include "ReweightIBDtoSRN.h"
 #include <iostream>
+#include <fstream>
 #include <cmath>
 
 ReweightIBDtoSRN::ReweightIBDtoSRN():Tool(){}
@@ -21,9 +22,9 @@ bool ReweightIBDtoSRN::Initialise(std::string configfile, DataModel &data){
 	
 	outputFile = TFile::Open(outputName.c_str(), "RECREATE");
 	
-	TBranch* exist = inputTree->FindBranch("mc");
+	TBranch* exist = inputTree->FindBranch("MC");
 	if(exist){
-		inputTree->SetBranchAddress("mc", &MC, &mcbranch);
+		inputTree->SetBranchAddress("MC", &MC);
 	}
 	
 	TSystemDirectory* modelsDir = new TSystemDirectory(modelsPath, modelsPath);
@@ -44,46 +45,49 @@ bool ReweightIBDtoSRN::Initialise(std::string configfile, DataModel &data){
 				modelName.Resize(modelName.Length() - 4);
 				TObjArray* fileObj = modelName.Tokenize(".");
 				modelName = ((TObjString*) fileObj->At(0))->String();
-				fluxValues[modelNames.size()] = new double[100];
 				int nBins;
+				std::vector<float> flux;
 				float binWidth;
 				float minE;
-				Read_Flux(Form("%s/%s", modelsPath, fileName.Data()), minE, binWidth, nBins, fluxValues[modelNames.size()]);
+				Read_Flux(Form("%s/%s", modelsPath, fileName.Data()), minE, binWidth, nBins, flux);
+				flux_all.push_back(flux);
 				minE_all.push_back(minE);
 				nBins_all.push_back(nBins);
+				binWidth_all.push_back(binWidth);
 				modelNames.push_back(modelName.Data());
 			}
 		}
 	}
 	
-	TFile* outputFile = new TFile(outputName.c_str(), "RECREATE");
+	for(int i = 0; i < modelNames.size(); i++){
+		std::cout << "Look at me " << modelNames[i] << std::endl;
+	}
+	
+	//TFile* outputFile = new TFile(outputName.c_str(), "RECREATE");
 	outputTree = inputTree->CloneTree(0);
 	
 	numofEntries = inputTree->GetEntries();
 	for(int i = 0; i < modelNames.size(); i++){
-		outputTree->Branch(Form("weight_%s", modelNames[i]), &fluxValues[i], Form("weight_%s/F", modelNames[i]));
-	}
+		outputTree->Branch(Form("weight_%s", modelNames[i].c_str()), &weightedFlux[i], Form("weight_%s/F", modelNames[i].c_str()));
+		}
 	
 	return true;
 }
 
 
 bool ReweightIBDtoSRN::Execute(){
-	
 	inputTree->GetEntry(entryNum);
-	
 	float neutP;
 	float posiP;
 	float cosTheta;
 	
-	
 	//get the momenta of the neutrino (neutP) and the positron (posiP), and calculate the angle between the two vectors (cosTheta)
-	neutP = sqrt(pow(MC->pvc[1][0], 2) + pow(MC->pvc[1][1], 2) + pow(MC->pvc[1][2], 2));
-	posiP = sqrt(pow(MC->pvc[0][0], 2) + pow(MC->pvc[0][1], 2) + pow(MC->pvc[0][2], 2));
-	cosTheta = (MC->pvc[0][0] * MC->pvc[1][0] + MC->pvc[0][1] * MC->pvc[1][1] + MC->pvc[0][2] * MC->pvc[1][2])/(neutP * posiP);
-
+	neutP = sqrt(pow(MC->pvc[2][0], 2) + pow(MC->pvc[2][1], 2) + pow(MC->pvc[2][2], 2));
+	posiP = sqrt(pow(MC->pvc[1][0], 2) + pow(MC->pvc[1][1], 2) + pow(MC->pvc[1][2], 2));
+	cosTheta = (MC->pvc[1][0] * MC->pvc[2][0] + MC->pvc[1][1] * MC->pvc[2][1] + MC->pvc[1][2] * MC->pvc[2][2])/(neutP * posiP);
 	for(int modelIndex; modelIndex < modelNames.size(); modelIndex++){
-		weightedFlux.push_back(weight_enu(neutP, cosTheta, minE_all[modelIndex], binWidth_all[modelIndex], nBins_all[modelIndex], fluxValues[modelIndex]));
+		float wFlux = weight_enu(neutP, cosTheta, minE_all[modelIndex], binWidth_all[modelIndex], nBins_all[modelIndex], flux_all[modelIndex]);
+		weightedFlux[modelIndex] = wFlux;
 	}
 	
 	outputTree->Fill();
@@ -92,6 +96,9 @@ bool ReweightIBDtoSRN::Execute(){
 	
 	if(entryNum >= numofEntries){
 		m_data->vars.Set("StopLoop", true);
+		outputFile->Write();
+		outputFile->Close();
+		inputFile->Close();
 	}
 	
 	return true;
@@ -99,20 +106,22 @@ bool ReweightIBDtoSRN::Execute(){
 
 
 bool ReweightIBDtoSRN::Finalise(){
-	outputFile->Write();
-	inputFile->Close();
-	outputFile->Close();
 	
 	return true;
 }
 
-bool ReweightIBDtoSRN::Read_Flux(const char* fileName, float &minE, float &binWidth, int &nBins, double *flux){
+
+bool ReweightIBDtoSRN::Read_Flux(const char* fileName, float &minE, float &binWidth, int &nBins, std::vector<float> &flux){
 	int count = 0;
 	double integral = 0;
+	double loc_ene;
+	double loc_flux;
 	double ene[2500];
 	FILE *currentFile = fopen(fileName, "r");
-	while(!feof(currentFile)){
-		fscanf(currentFile, "%lf %lf\n", &(ene[count]), &(flux[count]));
+	std::ifstream data(fileName);
+	while(data >> loc_ene >> loc_flux){
+		ene[count] = loc_ene;
+		flux.push_back(loc_flux);
 		if (count){
 			integral += 0.5 * (flux[count-1] + flux[count]) * (ene[count]-ene[count-1]);
 		}
@@ -120,23 +129,27 @@ bool ReweightIBDtoSRN::Read_Flux(const char* fileName, float &minE, float &binWi
 	}
 	nBins = count;
 	minE = ene[0];
-	binWidth = flux[1]-flux[0];
+	binWidth = ene[1]-ene[0];
 	fclose(currentFile);
 	return true;
 }
 
 //Reweighting function
 //Input flux is in cm^-2/s/MeV
-float ReweightIBDtoSRN::weight_enu(float truthE, float ctheta, float minE, float binWidth, int nbins, double *flux){
+float ReweightIBDtoSRN::weight_enu(float truthE, float ctheta, float minE, float binWidth, int nbins, std::vector<float> flux){
 	int binNum = (int) (floor((truthE - minE)/binWidth));
-	if (binNum < 0 || binNum >= nbins){
+	if (binNum < 0 || binNum >= nbins || binNum > flux.size() - 2){
+		//		std::cout << "FAILED " << nbins << " " << binNum << " " << truthE << " " << minE << " " << binWidth << std::endl;
 		return 0;
 	}
 	float residual = (truthE - minE - binWidth * binNum)/binWidth;
 	float yminE = flux[binNum];
 	float yup = flux[binNum + 1];
 	float spec = yup * residual + yminE * (1 - residual);
-	float weightFlux = spec * dsigma_sv(truthE, ctheta) * protonsPerKton * 3600 * 24 * fiducial;
+	float weightFlux = spec * dsigma_sv(truthE, ctheta) * protonsPerKton * fiducial * 3600 * 24 * 2790.1;
+	if(weightFlux > 100){
+		std::cout << "resi: " << residual << " yminE: " << yminE << " yup: " << yup << " spec: " << spec << " weightFlux: " << weightFlux << " truthE: " << truthE << std::endl;
+		}
 	return weightFlux;
 }
 
@@ -178,4 +191,3 @@ double ReweightIBDtoSRN::dsigma_sv(float enu, double costheta){
 	double dsigmadee = 2 * mp * hbarc2 * pow(Gf * cthc/smp2, 2)/(2 * M_PI) * m2 * fact ;//* rad;
 	return dsigmadee;
 }
-

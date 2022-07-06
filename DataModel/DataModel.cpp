@@ -14,7 +14,7 @@ DataModel::DataModel() : eventVariables_p(new BStore(false,true)), eventVariable
 }
 
 DataModel::~DataModel(){
-	if(rootTApp) delete rootTApp;
+	//if(rootTApp) delete rootTApp; // segfaults on application termination. J. Fannon 
 	//if(connectionTable) delete connectionTable;   // segfaults on application termination, maybe?
 }
 

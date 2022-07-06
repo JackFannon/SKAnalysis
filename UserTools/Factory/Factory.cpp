@@ -52,7 +52,8 @@ if (tool=="BSGoodCut") ret=new BSGoodCut;
 if (tool=="ODCut") ret=new ODCut;
 if (tool=="RelicMuonMatching") ret=new RelicMuonMatching;
 if (tool=="ReconstructMatchedMuons") ret=new ReconstructMatchedMuons;
-  if (tool=="WriteSpallCand") ret=new WriteSpallCand;
+if (tool=="WriteSpallCand") ret=new WriteSpallCand;
+  if (tool=="ReweightIBDtoSRN") ret=new ReweightIBDtoSRN;
 return ret;
 }
 
