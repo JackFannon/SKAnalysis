@@ -14,6 +14,7 @@
 #include "TTree.h"
 #include "TChain.h"
 #include "TBranch.h"
+#include "TH1F.h"
 #include "TMath.h"
 #include "TSystemDirectory.h"
 #include "TSystem.h"
@@ -56,7 +57,7 @@ class ReweightIBDtoSRN: public Tool {
 	int entryNum;
 	int numofEntries;
 	
-	
+	TH1F* newHist = new TH1F("","",50,0,50);
 	
 	int verbosity = 1;
 	int m_verbose;

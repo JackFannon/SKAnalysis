@@ -31,7 +31,7 @@ bool RelicMuonMatching::Initialise(std::string configfile, DataModel &data){
 
 bool RelicMuonMatching::Execute(){
 	
-	std::cout << "MADE IT HERE" << std::endl;
+	std::cout << "Got to this point" << std::endl;
 	
 	myTreeReader->Get("HEADER", myHeader);
 	myTreeReader->Get("LOWE", myLowe);

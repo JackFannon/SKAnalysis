@@ -48,3 +48,5 @@
 #include "RelicMuonMatching.h"
 #include "ReconstructMatchedMuons.h"
 #include "WriteSpallCand.h"
+#include "ReweightIBDtoSRN.h"
+#include "SpallTMVA.h"

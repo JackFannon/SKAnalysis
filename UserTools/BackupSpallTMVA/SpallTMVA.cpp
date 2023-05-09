@@ -10,7 +10,6 @@ SpallTMVA::SpallTMVA():Tool(){}
 
 bool SpallTMVA::Initialise(std::string configfile, DataModel &data){
 	
-	
 	if(configfile!="")  m_variables.Initialise(configfile);
 	//m_variables.Print();
 	
@@ -23,26 +22,17 @@ bool SpallTMVA::Initialise(std::string configfile, DataModel &data){
 	m_variables.Get("outputName", outputName);
 	m_variables.Get("outputTreeName", outputTreeName);
 	
-	//	inputFile = TFile::Open(inputName.c_str());
-	//	inputTree = (TTree *)inputFile->Get("data");
+	inputFile = TFile::Open(inputName.c_str());
+	inputTree = (TTree *)inputFile->Get("data");
 	
-	//	outputFile = TFile::Open(outputName.c_str(), "RECREATE");
-	//	outputTree = new TTree(outputTreeName.c_str(), outputTreeName.c_str());
-		
+	outputFile = TFile::Open(outputName.c_str(), "RECREATE");
+	outputTree = new TTree(outputTreeName.c_str(), outputTreeName.c_str());
+	
 	TBranch* exist = inputTree->FindBranch("LOWE");
 	if(exist){
 		inputTree->SetBranchAddress("LOWE", &LOWE, &lowebranch);
 	}
 	
-	exist = inputTree->FindBranch("TQReal");
-	if(exist ){
-		inputTree->SetBranchAddress("TQReal", &TQREAL, &tqrealbranch);
-	}
-	
-	//Charge and timing info
-	outputTree->Branch("totalCharge", &totalCharge, "sumQ/F");
-	
-	//Reconstucted info
 	outputTree->Branch("bsvertex", &bsvertex, "bsvertex[4]/F");
 	outputTree->Branch("bsresult", &bsresult, "bsresult/F");
 	outputTree->Branch("bsdir", &bsdir, "bsdir[3]/F");
@@ -85,28 +75,15 @@ bool SpallTMVA::Initialise(std::string configfile, DataModel &data){
 	outputTree->Branch("clpatlik", &clpatlik, "clpatlik/F");
 	outputTree->Branch("lwatert", &lwatert, "lwatert/F");
 	outputTree->Branch("lninfo", &lninfo, "lninfo/F");
-		
+	
 	numofEntries = inputTree->GetEntries();
 	return true;
 }
 
 
 bool SpallTMVA::Execute(){
-	std::cout << std::endl;
+	
 	inputTree->GetEntry(entryNum);
-	
-	//get total number of activated PMTs for this event
-	totalPMTsActivated = TQREAL->cables.size();
-	//reset the tota l charge for each event to zero before pulling it from the root file
-	totalCharge = 0;
-	
-	std::cout << "TOTAL PMTS ACTIVATED: " << std::endl;
-	
-	for(int pmtNumber = 0; pmtNumber < totalPMTsActivated; pmtNumber++){
-		//Grab charge info from TQReal
-		totalCharge += TQREAL->Q.at(pmtNumber);
-		std::cout << totalCharge << ", ";
-	}
 	
 	std::copy(std::begin(LOWE->bsvertex), std::end(LOWE->bsvertex), bsvertex);
 	std::copy(std::begin(LOWE->bsresult), std::end(LOWE->bsresult), bsresult);

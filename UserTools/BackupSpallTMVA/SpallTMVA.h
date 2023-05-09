@@ -44,14 +44,8 @@ class SpallTMVA: public Tool {
 	LoweInfo* LOWE;
 	TBranch* lowebranch;
 	
-	TQReal* TQREAL;
-	TBranch* tqrealbranch;
-	
 	int entryNum;
 	int numofEntries;
-	
-	int totalPMTsActivated;
-	float totalCharge;
 	
 	float  bsvertex[4];    // bonsai fit
 	float  bsresult[6];
