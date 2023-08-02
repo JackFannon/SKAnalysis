@@ -31,7 +31,7 @@ class WriteMuonCand: public Tool {
 	
 	std::vector<std::string> branchestoSkip;
 
-	std::deque<ParticleCand> muonsToRec;
+	std::vector<ParticleCand> muonsToRec;
 	
 	int lun;
 	int currentRun = 0;

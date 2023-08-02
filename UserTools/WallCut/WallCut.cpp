@@ -2,6 +2,7 @@
 #include "geotnkC.h"
 #include "fortran_routines.h"
 #include "Constants.h"
+#include "skroot_loweC.h"
 
 #include <cmath>
 
@@ -32,16 +33,23 @@ bool WallCut::Initialise(std::string configfile, DataModel &data){
 
 bool WallCut::Execute(){
 	
+	bool muon = false;
+	m_data->vars.Get("newMuon", muon);
+	if(muon){
+		return true;
+	}
+	
 	myTreeReader->Get("LOWE", myLowe);
 	
-	reconVertex = myLowe->bsvertex;
+	reconVertex = skroot_lowe_.bsvertex;
+	
+	//	reconVertex = myLowe->bsvertex;
 	
 	float xyDistance;
 	float IVRadius = 1690.;
 	float wallDistance;
 	float posHeight = 1810.;
 	float negHeight = -1810.;
-	
 	
 	xyDistance = sqrt(pow(reconVertex[0], 2) + pow(reconVertex[1], 2));
 	
@@ -55,16 +63,23 @@ bool WallCut::Execute(){
 	
 	if(wallDistance > zDistance){wallDistance = zDistance;}
 	
+
 	if(wallDistance < 200){
+		Nskipped++;
 		m_data->vars.Set("Skip",true);
-		std::cout << "Skipped due to wall" << std::endl;
+		//std::cout << "Skipped due to wall" << std::endl;
+		return true;
 	}
+	
+	m_data->vars.Set("Skip",false);
 	
 	return true;
 }
 
 
 bool WallCut::Finalise(){
+	
+	std::cout << "Number of events skipped due to wallcut: " << Nskipped << std::endl;
 	
 	return true;
 }

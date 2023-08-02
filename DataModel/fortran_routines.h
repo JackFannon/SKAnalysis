@@ -54,8 +54,15 @@ extern "C" void lfmufit_sk4_();
 
 extern "C" void newmufit_(float (*)[3], float (*)[3], float*);
 
-extern "C" void makededx_(float (*)[4], float (*)[3], int (*)[11146], float (*)[11146], float (*)[11146], float (*)[11146][3], int*, int*, float*, int (*)[255]);
+//extern "C" void makededx_(float (*)[4], float (*)[3], int (*)[11146], float (*)[11146], float (*)[11146], float (*)[11146][3], int*, float (*)[200]);
+
 extern "C" void makededx_intg_(float (*)[4], float (*)[3], float*, int (*)[11146], float (*)[11146], float (*)[11146], float (*)[11146][3], int*, int*, float (*)[200], int (*)[334380], int*);
+
+extern "C" void mfmuselect_(float (*)[3], float (*)[3], float*, int*);
+
+extern "C" void mffastfast_(float (*)[3], float (*)[3], int*);
+
+extern "C" void muboy_zbs_(int*, int*, float (*)[4], float (*)[3], float*, float*, int*, float (*)[36], int*);
 
 // from $ATMPD_ROOT/src/programs/TreeBuilder/examples/fort_fopen.F
 extern "C" void fort_fopen_(int*, const char*, char*, int* ,int);
@@ -88,6 +95,7 @@ extern "C" void lfallfit_sk4_final_qe43_(float*, int*, int*, int*, int*);
 extern "C" void lfallfit_sk4_data_(float*, int*, int*);
 extern "C" void lfallfit_sk4_gain_corr_(float*, int*, int*, int*, int*);
 extern "C" void lfallfit_sk4_mc_(float*, int*, int*);
+extern "C" void lfallfit_sk6_mc_(float*, int*, int*, int*, int*);
 // skroot_lowe_ common block
 
 extern "C" void rluxgo_(int*, int*, int*, int*);

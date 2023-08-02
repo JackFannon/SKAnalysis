@@ -1,17 +1,14 @@
-#ifndef WallCut_H
-#define WallCut_H
+#ifndef HitsCut_H
+#define HitsCut_H
 
 #include <string>
 #include <iostream>
 
 #include "Tool.h"
-#include "MTreeReader.h"
-#include "skroot.h"
-#include "ConnectionTable.h"
 
 
 /**
- * \class WallCut
+ * \class HitsCut
  *
  * This is a balnk template for a Tool used by the script to generate a new custom tool. Please fill out the descripton and author information.
 *
@@ -19,12 +16,12 @@
 * $Date: 2019/05/28 10:44:00 $
 */
 
-class WallCut: public Tool {
+class HitsCut: public Tool {
 	
 	
 	public:
 	
-	WallCut(); ///< Simple constructor
+	HitsCut(); ///< Simple constructor
 	bool Initialise(std::string configfile,DataModel &data); ///< Initialise Function for setting up Tool resorces. @param configfile The path and name of the dynamic configuration file to read in. @param data A reference to the transient data class used to pass information between Tools.
 	bool Execute(); ///< Executre function used to perform Tool perpose. 
 	bool Finalise(); ///< Finalise funciton used to clean up resorces.
@@ -32,19 +29,12 @@ class WallCut: public Tool {
 	
 	private:
 	
-	std::string treeReaderName;
+	int totalHits = 0;
+	int maxHits = 0;
 	
-	MTreeReader* myTreeReader = nullptr;
 	
-	const LoweInfo* myLowe=nullptr;
+	int m_verbose = 0;
 	
-	int verbosity = 1;
-	int m_verbose;
-	int v_error = 0;
-	
-	basic_array<float> reconVertex;
-	
-	int Nskipped = 0;
 };
 
 

@@ -14,3 +14,4 @@ inputDirectory /disk01/data6/sk4/run/0750/075000
 #inputDirectory /disk02/usr7/jfannon/simulations/ibd/sim/flatsim         # directory for flat IBD
 
 useRegex 0
+

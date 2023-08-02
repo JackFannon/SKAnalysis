@@ -1,6 +1,0 @@
-verbosity 100
-FileListName MyFileList                                                  # required argument
-filePattern "*.root"
-inputDirectory $HOME/ToolAnalysis/rootFiles/data/sk4/073226/
-
-useRegex 0
