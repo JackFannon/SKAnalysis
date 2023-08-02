@@ -1,0 +1,5 @@
+inputName /home/jfannon/disk03Data/sim/spall/recsim/merged_lowe_10000_990000.root
+muonsFile /disk02/usr6/acoffani/FLUKA_output/new_sampling/skbkg_showers/data_muons.txt
+showersFile /disk02/usr6/acoffani/FLUKA_output/new_sampling/skbkg_showers/data_showers.txt
+outputName /home/jfannon/disk03Data/sim/spall/recsim/atomicinfo_lowemu_merged_lowe_10000_990000.root
+outputTreeName lowemu

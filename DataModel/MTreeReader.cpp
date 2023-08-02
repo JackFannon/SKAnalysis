@@ -187,7 +187,7 @@ int MTreeReader::ParseBranches(){
 			TClass* ac = TClass::GetClass(lf->GetTypeName());
 			if(ac!=nullptr){
 				branch_istobject.emplace(branchname,ac->InheritsFrom("TObject"));
-			} else {
+			}else {
 				std::cerr<<"Unknown class for branch "<<lf->GetBranch()->GetTitle()
 						 <<"! Please make a dictionary."<<std::endl;
 				// what are the consequences of this? Do we need to remove it from

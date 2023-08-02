@@ -1,0 +1,12 @@
+verbosity 100
+FileListName MyFileList                                                  # required argument
+
+#filePattern "*.root"
+filePattern "610_Noise.root"
+
+#inputDirectory /disk02/usr7/jfannon/data/recon
+#inputDirectory /disk02/data7/sk6/run/0869/086933
+
+inputDirectory /disk02/usr7/jfannon/simulations/ibd/sim/flatsim
+
+useRegex 0

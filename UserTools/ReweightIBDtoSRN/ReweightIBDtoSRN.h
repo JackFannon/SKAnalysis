@@ -43,6 +43,8 @@ class ReweightIBDtoSRN: public Tool {
 	std::string inputName;
 	std::string outputName;
 	
+	int applyingWeights;
+	
 	TFile* inputFile;
 	TTree* inputTree;
 	
@@ -51,7 +53,7 @@ class ReweightIBDtoSRN: public Tool {
 	
 	MCInfo* MC = new MCInfo;
 	
-	int entryNum = 1;
+	int entryNum = 0;
 	int numofEntries;
 	
 	
@@ -77,7 +79,8 @@ class ReweightIBDtoSRN: public Tool {
 	double dsigma_sv(float enu, double costheta);
 	bool Read_Flux(const char* fileName, float &minE, float &binWidth, int &nBins, std::vector<float> &flux);
 	float weight_enu(float truthE, float ctheta, float minE, float binWidth, int nbins, std::vector<float> flux);
-	
+
+	bool normaliseFlux();
 	
 };
 

@@ -16,6 +16,7 @@ bool ReweightIBDtoSRN::Initialise(std::string configfile, DataModel &data){
 	
 	m_variables.Get("inputName", inputName);
 	m_variables.Get("outputName", outputName);
+	m_variables.Get("applyingWeights", applyingWeights);
 	
 	inputFile = TFile::Open(inputName.c_str());
 	inputTree = (TTree *)inputFile->Get("data");
@@ -55,6 +56,7 @@ bool ReweightIBDtoSRN::Initialise(std::string configfile, DataModel &data){
 				nBins_all.push_back(nBins);
 				binWidth_all.push_back(binWidth);
 				modelNames.push_back(modelName.Data());
+				m_data->SRNModelNames.push_back(modelName.Data());
 			}
 		}
 	}
@@ -77,56 +79,85 @@ bool ReweightIBDtoSRN::Initialise(std::string configfile, DataModel &data){
 
 
 bool ReweightIBDtoSRN::Execute(){
-	inputTree->GetEntry(entryNum);
-	float neutP;
-	float posiP;
-	float cosTheta;
-	
-	//get the momenta of the neutrino (neutP) and the positron (posiP), and calculate the angle between the two vectors (cosTheta)
-	neutP = sqrt(pow(MC->pvc[2][0], 2) + pow(MC->pvc[2][1], 2) + pow(MC->pvc[2][2], 2));
-	posiP = sqrt(pow(MC->pvc[1][0], 2) + pow(MC->pvc[1][1], 2) + pow(MC->pvc[1][2], 2));
-	cosTheta = (MC->pvc[1][0] * MC->pvc[2][0] + MC->pvc[1][1] * MC->pvc[2][1] + MC->pvc[1][2] * MC->pvc[2][2])/(neutP * posiP);
-	
-	for(float i = 0; i < 180; i++){
-		if(neutP > i/2 && neutP < (i+1)/2){
-			float tempCTheta = (cosTheta + avCosTheta[i])/2.0;
-			avCosTheta[i] = tempCTheta;
+	if(m_data->applyReweight == false){
+		inputTree->GetEntry(entryNum);
+		float neutP;
+		float posiP;
+		float cosTheta;
+		
+		//Get the momenta of the neutrino (neutP) and the positron (posiP), and calculate the angle between the two vectors (cosTheta)
+		neutP = sqrt(pow(MC->pvc[2][0], 2) + pow(MC->pvc[2][1], 2) + pow(MC->pvc[2][2], 2));
+		posiP = sqrt(pow(MC->pvc[1][0], 2) + pow(MC->pvc[1][1], 2) + pow(MC->pvc[1][2], 2));
+		cosTheta = (MC->pvc[1][0] * MC->pvc[2][0] + MC->pvc[1][1] * MC->pvc[2][1] + MC->pvc[1][2] * MC->pvc[2][2])/(neutP * posiP);
+		
+		for(float i = 0; i < 180; i++){
+			if(neutP > i/2 && neutP < (i+1)/2){
+				float tempCTheta = (cosTheta + avCosTheta[i])/2.0;
+				avCosTheta[i] = tempCTheta;
+			}
+		}
+		
+		for(int modelIndex = 0; modelIndex < modelNames.size(); modelIndex++){
+			float wFlux = weight_enu(neutP, cosTheta, minE_all[modelIndex], binWidth_all[modelIndex], nBins_all[modelIndex], flux_all[modelIndex]);
+			weightedFlux[modelIndex] = wFlux;
+		}
+		
+		outputTree->Fill();
+		
+		entryNum++;
+		if(entryNum >= numofEntries){
+			if(applyingWeights){
+			for(int modelIndex = 0; modelIndex < modelNames.size(); modelIndex++){
+				for(int ene = 0; ene < 180; ene++){
+					m_data->SRNWeights[modelIndex].push_back(weight_enu(ene/2, avCosTheta[ene], minE_all[modelIndex], binWidth_all[modelIndex], nBins_all[modelIndex], flux_all[modelIndex]));
+				}
+			}
+				normaliseFlux();
+				for(int i = 0; i < m_data->SRNWeights.size(); i++){
+					for(float j = 0; j < m_data->SRNWeights[i].size(); j++){
+						if(m_data->SRNWeights[i][j]){
+							std::cout << "Model: " << modelNames[i] << " Energy: " << j/2 << " Weighting: " << m_data->SRNWeights[i][j] << std::endl;
+						}
+					}
+				}
+				std::cout << "SET APPLY REWEIGHT IN DATA MODEL" << std::endl;
+				m_data->applyReweight = true;
+			}else{m_data->vars.Set("StopLoop", true);
+			}
 		}
 	}
-	
-	for(int modelIndex; modelIndex < modelNames.size(); modelIndex++){
-		float wFlux = weight_enu(neutP, cosTheta, minE_all[modelIndex], binWidth_all[modelIndex], nBins_all[modelIndex], flux_all[modelIndex]);
-		weightedFlux[modelIndex] = wFlux;
-	}
-	
-	outputTree->Fill();
-	
-	entryNum++;
-	
-	if(entryNum >= numofEntries){
-		m_data->vars.Set("StopLoop", true);
-	}
-	
 	return true;
 }
 
 
 bool ReweightIBDtoSRN::Finalise(){
-	for(int modelIndex; modelIndex < modelNames.size(); modelIndex++){
-		m_data->SRNModelNames.push_back(modelNames[modelIndex]);
-		for(int ene = 0; ene < 180; ene++){
-			m_data->SRNWeights[modelIndex].push_back(weight_enu(ene/2, avCosTheta[ene], minE_all[modelIndex], binWidth_all[modelIndex], nBins_all[modelIndex], flux_all[modelIndex]));
-		}
-	}
-	for(int i = 0; i < m_data->SRNWeights.size(); i++){
-		for(int j = 0; j < m_data->SRNWeights[i].size(); j++){
-			std::cout << "Model: " << modelNames[i] << " Energy: " << j/2 << " Weighting: " << m_data->SRNWeights[i][j] << std::endl;
-		}
-	}
+	
+	
+	
 	
 	outputFile->Write();
 	outputFile->Close();
 	inputFile->Close();
+	return true;
+}
+
+bool ReweightIBDtoSRN::normaliseFlux(){
+	float maxWeight = 0;
+	for(int x = 0; x < m_data->SRNWeights.size(); x++){
+		for(int y = 0; y < m_data->SRNWeights[x].size(); y++){
+			if(maxWeight < m_data->SRNWeights[x][y]){
+				maxWeight = m_data->SRNWeights[x][y];
+			}
+		}
+	}
+	
+	for(int x = 0; x < m_data->SRNWeights.size(); x++){
+		for(int y = 0; y < m_data->SRNWeights[x].size(); y++){
+			m_data->SRNWeights[x][y] = m_data->SRNWeights[x][y]/maxWeight;
+		}
+	}
+	
+	
 	return true;
 }
 

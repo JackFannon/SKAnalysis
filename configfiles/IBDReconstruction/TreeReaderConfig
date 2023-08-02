@@ -1,0 +1,15 @@
+verbosity 1
+treeName data
+inputFile /disk02/usr7/jfannon/simulations/ibd/sim/INPUTNAMEHERE
+readerName reconReader
+firstEntry 0
+maxEntries -1
+skFile 1
+skrootMode 0
+outputFile /disk03/usr8/jfannon/sim/reconIBD/OUTPUTNAMEHERE
+skreadMode 0
+LUN 10
+skoptn 31,30,26,25
+skbadopt 23
+SK_GEOMETRY 4
+skipPedestals 1

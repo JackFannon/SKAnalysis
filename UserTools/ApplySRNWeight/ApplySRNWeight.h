@@ -6,12 +6,13 @@
 
 #include "Tool.h"
 #include "skroot.h"
+#include "TH1F.h"
 
 
 /**
- * \class ApplySRNWeight
- *
- * This is a balnk template for a Tool used by the script to generate a new custom tool. Please fill out the descripton and author information.
+* \class ApplySRNWeight
+*
+* This is a balnk template for a Tool used by the script to generate a new custom tool. Please fill out the descripton and author information.
 *
 * $Author: B.Richards $
 * $Date: 2019/05/28 10:44:00 $
@@ -29,23 +30,26 @@ class ApplySRNWeight: public Tool {
 	
 	
 	private:
+	
 	int verbosity = 1;
 	int m_verbose;
 	int v_error = 0;
+	int entryNum = 0;
+	int numofEntries;
 	
 	std::string inputName;
 	std::string outputName;
 	
-	TFile* inputFile;
+	TFile* newinputFile;
 	TTree* inputTree;
-	TFile* outputFile;
-	TTree* outputTree;
 	std::vector<TFile*> outputFiles;
 	std::vector<TTree*> outputTrees;
 	
+	TH1F* neutEnergyHist = new TH1F("", "", 180, 0, 90);
+	
 	MCInfo* MC = new MCInfo;
 	
-	
+	std::vector<int> neutEBinContent;
 	
 };
 

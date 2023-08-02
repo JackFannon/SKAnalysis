@@ -1,0 +1,8 @@
+StackPlots 1
+XMin -60
+XMax 60
+Interval 2
+HistTitle ""
+StackTitle TimeDifferencebetweenMuonsandLowEevents
+NHists 2
+treeReaderName /disk03/usr8/jfannon/data/spallRedWallTestTest2.root

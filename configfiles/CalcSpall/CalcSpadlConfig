@@ -1,0 +1,6 @@
+treeReaderName thisReader
+outputName /disk03/usr8/jfannon/testSpadl.root
+#inputName /disk02/usr6/lbernard/spallation/simu_shower_ncapt_decays_Gd/skdetsim_20210410_237000_lomufit.root
+#inputName /disk03/usr8/jfannon/skdetsim_20210410_merged.lomufit.root
+#inputName /disk02/usr6/lbernard/spallation/simu_shower_ncapt_decays_bkg_Gd/skdetsim_20210408_27200_lomufit.root
+inputName /disk02/usr6/acoffani/spallation_simu/neutron_cloud/allshowers_Gd/mergedall/mergedall_neutroncloud_lowefit_148302mu_allshowers.root

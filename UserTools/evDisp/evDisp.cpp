@@ -43,7 +43,7 @@ bool evDisp::Initialise(std::string configfile, DataModel &data){
 	
 	if(dataSrc == -1 || dataSrc == 1){
 		// if getting data from TTree, check the TreeReader
-		 if(m_data->Trees.count(treeReaderName)==0){
+		if(m_data->Trees.count(treeReaderName)==0){
 			Log("Failed to find TreeReader "+treeReaderName+" in DataModel!",v_error,verbosity);
 			return false;
 		} else {

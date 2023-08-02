@@ -1,0 +1,15 @@
+verbosity 1
+treeName data
+inputFile INPUTNAMEHERE
+readerName reconReader
+firstEntry 0
+maxEntries -1
+skFile 1
+skrootMode 0
+outputFile OUTPUTNAMEHERE
+skreadMode 0
+LUN 10
+skoptn 31,30,26,25
+skbadopt 23
+SK_GEOMETRY 4
+skipPedestals 1

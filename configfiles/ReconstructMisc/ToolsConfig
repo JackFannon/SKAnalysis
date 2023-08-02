@@ -1,5 +1,5 @@
 myGracefulStop GracefulStop configfiles/ReconstructMisc/GracefulStopConfig
-myLoadFileList LoadFileList configfiles/ReconstructMisc/LoadFileListConfig
+#myLoadFileList LoadFileList configfiles/ReconstructMisc/LoadFileListConfig
 myTreeReader TreeReader configfiles/ReconstructMisc/TreeReaderConfig
 mylf_allfit_new lf_allfit_new configfiles/ReconstructMisc/lf_allfit_newConfig
 

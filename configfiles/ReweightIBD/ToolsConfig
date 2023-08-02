@@ -1,0 +1,2 @@
+myReweightIBDtoSRN ReweightIBDtoSRN configfiles/ReweightIBD/ReweightIBDtoSRNConfig
+myApplySRNWeight ApplySRNWeight configfiles/ReweightIBD/ApplySRNWeightConfig

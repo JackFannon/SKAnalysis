@@ -134,6 +134,7 @@ bool TreeReader::Initialise(std::string configfile, DataModel &data){
 		// For now we'll just keep our own list of LUNs in the DataModel
 		LUN = m_data->GetNextLUN(LUN, readerName);
 		
+		
 		// slight change in initialization depending on SK root vs zebra
 		if(not (skrootMode==SKROOTMODE::ZEBRA)){
 			Log(toolName+" doing SKROOT initialization",v_debug,verbosity);
@@ -164,6 +165,7 @@ bool TreeReader::Initialise(std::string configfile, DataModel &data){
 			// so a subset of entries may be copied across.
 			
 			// create the treemanager, and in write mode, the output file
+			
 			switch(skrootMode){
 				case SKROOTMODE::READ:  skroot_open_read_(&LUN); break;
 				case SKROOTMODE::WRITE: skroot_open_write_(&LUN, outputFile.c_str(), outputFile.size()); break;
@@ -483,7 +485,8 @@ bool TreeReader::Initialise(std::string configfile, DataModel &data){
 	std::function<bool()> loadSHE = std::bind(std::mem_fn(&TreeReader::LoadSHE), std::ref(*this));
 	std::function<bool()> loadAFT = std::bind(std::mem_fn(&TreeReader::LoadAFT), std::ref(*this));
 	std::function<bool(int)> loadCommons = std::bind(std::mem_fn(&TreeReader::LoadCommons), std::ref(*this), std::placeholders::_1);
-	m_data->RegisterReader(readerName, &myTreeReader, hasAFT, loadSHE, loadAFT, loadCommons);
+	std::function<int(long, bool)> getTreeEntry = std::bind(std::mem_fn(&TreeReader::ReadEntry), std::ref(*this), std::placeholders::_1, std::placeholders::_2);
+	m_data->RegisterReader(readerName, &myTreeReader, hasAFT, loadSHE, loadAFT, loadCommons, getTreeEntry);
 	
 	// get first entry to process
 	if(firstEntry<0) firstEntry=0;

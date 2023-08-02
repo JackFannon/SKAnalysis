@@ -11,11 +11,13 @@ verbosity 1
 
 #inputFile ./../skdetsim/spall_220000_230000.root
 
-inputFile ./lowe_spallMC.root
+#inputFile ./lowe_spallMC.root
 
 #inputFile ./rootFiles/SKDETSIM/Recon/skdetsim.lowfit.r61945.1.mcfit.root
 
 #inputFile ./rootFiles/lowe_skdetsim.r628.root
+
+inputFile /disk02/usr7/jfannon/data/spallred.root
 
 treeName data
 readerName demoReader

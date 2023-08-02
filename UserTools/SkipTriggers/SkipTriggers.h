@@ -66,6 +66,7 @@ class SkipTriggers: public Tool {
 	int PedestalTrig = 0;
 	int T2KTrig = 0;
 	
+	int Nskipped = 0;
 	
 };
 
