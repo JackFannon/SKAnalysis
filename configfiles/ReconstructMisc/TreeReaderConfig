@@ -1,0 +1,17 @@
+verbosity 1                                    # tool verbosity (1)
+#FileListName MyFileList                        # the name of a set of files prepared by the LoadFileList tool
+inputFile /home/jfannon/disk03Data/decay_prod_test.root
+treeName data                                  # the name of the tree within the file
+readerName reconReader                         # the name to give the MTreeReader in the DataModel
+firstEntry 0                                   # the first entry to read (0)
+maxEntries -1                                  # max number of entries to process before stopping the ToolChain (-1)
+skFile 1                                       # whether to enable additional functionality (1)
+skrootMode 0                                   # 2=read, 1=write, 0=root2root copy. (2)
+#outputFile /disk02/usr7/jfannon/simulations/spall/recon/lowe_1000000_1010000.root               # the output file, when using the TreeManager in root2root mode
+outputFile /home/jfannon/disk03Data/lowe_prod_test.root
+skreadMode 0                                   # 3=`skrawread` and `skread`, 2=`skraw
+LUN 10                                         # LUN to assign to the file (10)
+skoptn 31,30,26,25                             # options describing what to load via skread/skrawread (31)
+skbadopt 23                                    # which classes of channels to mask (23)
+SK_GEOMETRY 6                                  # which SK geometry this file relates to (4)
+skipPedestals 1                                # whether to skip pedestal and status entries (1)

@@ -1,2 +1,0 @@
-myTreeReader TreeReader configfiles/SpalltoCSV/TreeReaderConfig
-myROOT2csv ROOT2csv configfiles/SpalltoCSV/ROOT2csvConfig

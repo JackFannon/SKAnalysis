@@ -1,6 +1,6 @@
 include $(SKOFL_ROOT)/config.gmk  # pulls in libskroot.so as well
 PWD=`pwd`
-
+Dependencies=Dependencies
 # C++ compiler flags - XXX config.gmk sets this already, so APPEND ONLY XXX
 CXXFLAGS += -fPIC -O3 -g -std=c++11 -fdiagnostics-color=always -Wno-reorder -Wno-sign-compare -Wno-unused-variable -Wno-unused-but-set-variable -Werror=array-bounds -lgfortran # -Wpadded -Wpacked -malign-double -mpreferred-stack-boundary=8  # -Wpedantic << too many pybind warnings?
 
@@ -51,7 +51,7 @@ LDLIBS += $(CERNLIB)
 # ROOT Headers & Libraries
 ROOTINCLUDE= `root-config --cflags`
 ROOTLIB = `root-config --libs --evelibs --glibs` -lMinuit -lXMLIO -lMLP
-ROOTSTLLIBS = -L${HOME}/stllibs -lRootStl
+ROOTSTLLIBS = -L$(Dependencies)/RootStl -lRootStl
 
 TMVASYS = $(Dependencies)/TMVA
 TMVAINCLUDE = -I $(TMVASYS)/include
@@ -98,7 +98,7 @@ endif
 #CXXFLAGS += $(ZLIBFLAG) $(ZLIB)
 
 # Third Reduction Library (part of SRN analysis)
-THIRDREDLIB = -L${HOME}/relic_sk4_ana/relic_work_dir/data_reduc/third/lib -lthirdredvars
+THIRDREDLIB = -L$(Dependencies)/relic_sk4_ana/data_reduc/third/lib -lthirdredvars
 
 # all user classes that the user may wish to write to ROOT files require a dictionary.
 # TODO maybe we should put these in a separate directory or something so they don't need to be listed explicitly
@@ -123,7 +123,7 @@ UserLibs = lib/libMyClass.so
 USERLIBS1=$(patsubst %.so,%,$(UserLibs))
 USERLIBS2=$(patsubst lib/lib%,-l%,$(USERLIBS1))
 
-Dependencies=Dependencies
+#Dependencies=Dependencies
 
 debug: all
 

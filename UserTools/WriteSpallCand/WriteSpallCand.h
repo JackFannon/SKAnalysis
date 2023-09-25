@@ -21,11 +21,16 @@ class WriteSpallCand: public Tool {
 	
 	private:
 	
+	bool WriteInfo(ParticleCand Event);
+	
 	std::string treeReaderName;
 	std::string treeWriterName;
+	
 	MTreeReader* myTreeReader = nullptr;
 	MTreeReader* myTreeWriter = nullptr;
+	
 	const Header* myHeader=nullptr;
+	const LoweInfo* myLowe=nullptr;
 	
 	std::string outputFile;
 	
@@ -37,6 +42,16 @@ class WriteSpallCand: public Tool {
 	int verbosity = 1;
 	int m_verbose;
 	int v_error = 0;
+	
+	TTree* WriteTree=nullptr;
+	TBranch* MatchedEvNumsBranch=nullptr;
+	TBranch* MatchedTimeDiffBranch=nullptr;
+	TBranch* PIDBranch=nullptr;
+	
+	std::vector<int> MatchedEvNums;
+	std::vector<float> MatchedTimeDiff;
+	
+	int PID;
 	
 };
 

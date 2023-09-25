@@ -14,11 +14,9 @@
 #include "TTree.h"
 #include "TChain.h"
 #include "TBranch.h"
-#include "TH1F.h"
 #include "TMath.h"
 #include "TSystemDirectory.h"
 #include "TSystem.h"
-
 
 /**
  * \class ReweightIBDtoSRN
@@ -45,40 +43,45 @@ class ReweightIBDtoSRN: public Tool {
 	std::string inputName;
 	std::string outputName;
 	
+	int applyingWeights;
+	
 	TFile* inputFile;
 	TTree* inputTree;
 	
 	TFile* outputFile;
 	TTree* outputTree;
 	
-	MCInfo* MC;
-	TBranch* mcbranch;
+	MCInfo* MC = new MCInfo;
 	
-	int entryNum;
+	int entryNum = 0;
 	int numofEntries;
 	
-	TH1F* newHist = new TH1F("","",50,0,50);
 	
 	int verbosity = 1;
 	int m_verbose;
 	int v_error = 0;
 	
-	const char *modelsPath="./FluxModels/";
+	const char *modelsPath="/home/jfannon/software/SKAnalysis/FluxModels";
 	const char *ext=".cc";
-	std::vector<const char*> modelNames;
+	std::vector<std::string> modelNames;
 	std::vector <int> nBins_all;
+	std::vector<std::vector<float>> flux_all;
 	std::vector<float> binWidth_all;
 	std::vector<float> minE_all;
-	double* fluxValues[100];
 	
 	float protonsPerKton = pow(6.67, 31);
-	float fiducial = 22.5;
+	float fiducial = 22.5 * 1000 * 1000;
 	
-	std::vector<float> weightedFlux;
+	float weightedFlux[11];
+	
+	std::vector<float> avCosTheta;
 	
 	double dsigma_sv(float enu, double costheta);
-	bool Read_Flux(const char* fileName, float &minE, float &binWidth, int &nBins, double *flux);
-	float weight_enu(float truthE, float ctheta, float minE, float binWidth, int nbins, double *flux);
+	bool Read_Flux(const char* fileName, float &minE, float &binWidth, int &nBins, std::vector<float> &flux);
+	float weight_enu(float truthE, float ctheta, float minE, float binWidth, int nbins, std::vector<float> flux);
+
+	bool normaliseFlux();
+	
 };
 
 

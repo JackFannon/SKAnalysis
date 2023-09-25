@@ -1,0 +1,5 @@
+verbosity 100
+FileListName MyFileList                                                  # required argument
+filePattern "*6.root"
+inputDirectory /home/jfannon
+useRegex 0  # 1=regex, 0=glob                                            # default = glob

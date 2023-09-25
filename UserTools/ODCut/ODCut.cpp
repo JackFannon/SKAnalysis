@@ -48,6 +48,7 @@ bool ODCut::Execute(){
 		myTreeReader->Get("HEADER", myHeader);
 		triggerID = myHeader->idtgsk;
 		if(triggerID.test(4)){
+			Nskipped++;
 			m_data->vars.Set("Skip", true);
 			return true;
 		}
@@ -69,6 +70,7 @@ bool ODCut::Execute(){
 	
 	//if there are more than 20 hits in the 500 - 1300 ns range then throw out the event as a relic candidate
 	if(ODHitsInWindow > 20){
+		Nskipped++;
 		m_data->vars.Set("Skip", true);
 	}
 	
@@ -77,6 +79,8 @@ bool ODCut::Execute(){
 
 
 bool ODCut::Finalise(){
+	
+	std::cout << "Number of events skipped due to ODCut: " << Nskipped << std::endl;
 	
 	return true;
 }

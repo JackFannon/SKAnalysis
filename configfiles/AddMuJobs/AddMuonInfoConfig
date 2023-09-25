@@ -1,0 +1,5 @@
+inputName INPUTNAMEHERE
+muonsFile /disk02/usr6/acoffani/FLUKA_output/new_sampling/skbkg_showers/data_muons.txt
+showersFile /disk02/usr6/acoffani/FLUKA_output/new_sampling/skbkg_showers/data_showers.txt
+outputName OUTPUTNAMEHERE
+outputTreeName lowePlusMuinfo

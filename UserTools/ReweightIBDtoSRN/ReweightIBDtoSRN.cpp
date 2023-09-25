@@ -1,12 +1,11 @@
 #include "ReweightIBDtoSRN.h"
 #include <iostream>
+#include <fstream>
 #include <cmath>
 
 ReweightIBDtoSRN::ReweightIBDtoSRN():Tool(){}
 
 bool ReweightIBDtoSRN::Initialise(std::string configfile, DataModel &data){
-	
-	std::cout << configfile << std::endl;
 	if(configfile!="")  m_variables.Initialise(configfile);
 	//m_variables.Print();
 	
@@ -17,15 +16,16 @@ bool ReweightIBDtoSRN::Initialise(std::string configfile, DataModel &data){
 	
 	m_variables.Get("inputName", inputName);
 	m_variables.Get("outputName", outputName);
+	m_variables.Get("applyingWeights", applyingWeights);
 	
 	inputFile = TFile::Open(inputName.c_str());
 	inputTree = (TTree *)inputFile->Get("data");
 	
 	outputFile = TFile::Open(outputName.c_str(), "RECREATE");
 	
-	TBranch* exist = inputTree->FindBranch("mc");
+	TBranch* exist = inputTree->FindBranch("MC");
 	if(exist){
-		inputTree->SetBranchAddress("mc", &MC, &mcbranch);
+		inputTree->SetBranchAddress("MC", &MC);
 	}
 	
 	TSystemDirectory* modelsDir = new TSystemDirectory(modelsPath, modelsPath);
@@ -46,24 +46,32 @@ bool ReweightIBDtoSRN::Initialise(std::string configfile, DataModel &data){
 				modelName.Resize(modelName.Length() - 4);
 				TObjArray* fileObj = modelName.Tokenize(".");
 				modelName = ((TObjString*) fileObj->At(0))->String();
-				fluxValues[modelNames.size()] = new double[100];
 				int nBins;
+				std::vector<float> flux;
 				float binWidth;
 				float minE;
-				Read_Flux(Form("%s/%s", modelsPath, fileName.Data()), minE, binWidth, nBins, fluxValues[modelNames.size()]);
+				Read_Flux(Form("%s/%s", modelsPath, fileName.Data()), minE, binWidth, nBins, flux);
+				flux_all.push_back(flux);
 				minE_all.push_back(minE);
 				nBins_all.push_back(nBins);
+				binWidth_all.push_back(binWidth);
 				modelNames.push_back(modelName.Data());
+				m_data->SRNModelNames.push_back(modelName.Data());
 			}
 		}
 	}
 	
-	TFile* outputFile = new TFile(outputName.c_str(), "RECREATE");
 	outputTree = inputTree->CloneTree(0);
 	
 	numofEntries = inputTree->GetEntries();
 	for(int i = 0; i < modelNames.size(); i++){
-		outputTree->Branch(Form("weight_%s", modelNames[i]), &fluxValues[i], Form("weight_%s/F", modelNames[i]));
+		outputTree->Branch(Form("weight_%s", modelNames[i].c_str()), &weightedFlux[i], Form("weight_%s/F", modelNames[i].c_str()));
+		std::vector<float> modelWeight;
+		m_data->SRNWeights.push_back(modelWeight);
+	}
+	
+	for(float i=0; i < 90; i+=0.5){
+		avCosTheta.push_back(0);
 	}
 	
 	return true;
@@ -71,50 +79,100 @@ bool ReweightIBDtoSRN::Initialise(std::string configfile, DataModel &data){
 
 
 bool ReweightIBDtoSRN::Execute(){
-	
-	inputTree->GetEntry(entryNum);
-	
-	float neutP;
-	float posiP;
-	float cosTheta;
-	
-	
-	//get the momenta of the neutrino (neutP) and the positron (posiP), and calculate the angle between the two vectors (cosTheta)
-	neutP = sqrt(pow(MC->pvc[1][0], 2) + pow(MC->pvc[1][1], 2) + pow(MC->pvc[1][2], 2));
-	posiP = sqrt(pow(MC->pvc[0][0], 2) + pow(MC->pvc[0][1], 2) + pow(MC->pvc[0][2], 2));
-	cosTheta = (MC->pvc[0][0] * MC->pvc[1][0] + MC->pvc[0][1] * MC->pvc[1][1] + MC->pvc[0][2] * MC->pvc[1][2])/(neutP * posiP);
-
-	for(int modelIndex; modelIndex < modelNames.size(); modelIndex++){
-		weightedFlux.push_back(weight_enu(neutP, cosTheta, minE_all[modelIndex], binWidth_all[modelIndex], nBins_all[modelIndex], fluxValues[modelIndex]));
+	if(m_data->applyReweight == false){
+		inputTree->GetEntry(entryNum);
+		float neutP;
+		float posiP;
+		float cosTheta;
+		
+		//Get the momenta of the neutrino (neutP) and the positron (posiP), and calculate the angle between the two vectors (cosTheta)
+		neutP = sqrt(pow(MC->pvc[2][0], 2) + pow(MC->pvc[2][1], 2) + pow(MC->pvc[2][2], 2));
+		posiP = sqrt(pow(MC->pvc[1][0], 2) + pow(MC->pvc[1][1], 2) + pow(MC->pvc[1][2], 2));
+		cosTheta = (MC->pvc[1][0] * MC->pvc[2][0] + MC->pvc[1][1] * MC->pvc[2][1] + MC->pvc[1][2] * MC->pvc[2][2])/(neutP * posiP);
+		
+		for(float i = 0; i < 180; i++){
+			if(neutP > i/2 && neutP < (i+1)/2){
+				float tempCTheta = (cosTheta + avCosTheta[i])/2.0;
+				avCosTheta[i] = tempCTheta;
+			}
+		}
+		
+		for(int modelIndex = 0; modelIndex < modelNames.size(); modelIndex++){
+			float wFlux = weight_enu(neutP, cosTheta, minE_all[modelIndex], binWidth_all[modelIndex], nBins_all[modelIndex], flux_all[modelIndex]);
+			weightedFlux[modelIndex] = wFlux;
+		}
+		
+		outputTree->Fill();
+		
+		entryNum++;
+		if(entryNum >= numofEntries){
+			if(applyingWeights){
+			for(int modelIndex = 0; modelIndex < modelNames.size(); modelIndex++){
+				for(int ene = 0; ene < 180; ene++){
+					m_data->SRNWeights[modelIndex].push_back(weight_enu(ene/2, avCosTheta[ene], minE_all[modelIndex], binWidth_all[modelIndex], nBins_all[modelIndex], flux_all[modelIndex]));
+				}
+			}
+				normaliseFlux();
+				for(int i = 0; i < m_data->SRNWeights.size(); i++){
+					for(float j = 0; j < m_data->SRNWeights[i].size(); j++){
+						if(m_data->SRNWeights[i][j]){
+							std::cout << "Model: " << modelNames[i] << " Energy: " << j/2 << " Weighting: " << m_data->SRNWeights[i][j] << std::endl;
+						}
+					}
+				}
+				std::cout << "SET APPLY REWEIGHT IN DATA MODEL" << std::endl;
+				m_data->applyReweight = true;
+			}else{m_data->vars.Set("StopLoop", true);
+			}
+		}
 	}
-	
-	outputTree->Fill();
-	
-	entryNum++;
-	
-	if(entryNum >= numofEntries){
-		m_data->vars.Set("StopLoop", true);
-	}
-	
 	return true;
 }
 
 
 bool ReweightIBDtoSRN::Finalise(){
+	
+	
+	
+	
 	outputFile->Write();
-	inputFile->Close();
 	outputFile->Close();
+	inputFile->Close();
+	return true;
+}
+
+bool ReweightIBDtoSRN::normaliseFlux(){
+	float maxWeight = 0;
+	for(int x = 0; x < m_data->SRNWeights.size(); x++){
+		for(int y = 0; y < m_data->SRNWeights[x].size(); y++){
+			if(maxWeight < m_data->SRNWeights[x][y]){
+				maxWeight = m_data->SRNWeights[x][y];
+			}
+		}
+	}
+	
+	for(int x = 0; x < m_data->SRNWeights.size(); x++){
+		for(int y = 0; y < m_data->SRNWeights[x].size(); y++){
+			m_data->SRNWeights[x][y] = m_data->SRNWeights[x][y]/maxWeight;
+		}
+	}
+	
 	
 	return true;
 }
 
-bool ReweightIBDtoSRN::Read_Flux(const char* fileName, float &minE, float &binWidth, int &nBins, double *flux){
+
+bool ReweightIBDtoSRN::Read_Flux(const char* fileName, float &minE, float &binWidth, int &nBins, std::vector<float> &flux){
 	int count = 0;
 	double integral = 0;
+	double loc_ene;
+	double loc_flux;
 	double ene[2500];
 	FILE *currentFile = fopen(fileName, "r");
-	while(!feof(currentFile)){
-		fscanf(currentFile, "%lf %lf\n", &(ene[count]), &(flux[count]));
+	std::ifstream data(fileName);
+	while(data >> loc_ene >> loc_flux){
+		ene[count] = loc_ene;
+		flux.push_back(loc_flux);
 		if (count){
 			integral += 0.5 * (flux[count-1] + flux[count]) * (ene[count]-ene[count-1]);
 		}
@@ -122,23 +180,25 @@ bool ReweightIBDtoSRN::Read_Flux(const char* fileName, float &minE, float &binWi
 	}
 	nBins = count;
 	minE = ene[0];
-	binWidth = flux[1]-flux[0];
+	binWidth = ene[1]-ene[0];
 	fclose(currentFile);
 	return true;
 }
 
 //Reweighting function
 //Input flux is in cm^-2/s/MeV
-float ReweightIBDtoSRN::weight_enu(float truthE, float ctheta, float minE, float binWidth, int nbins, double *flux){
+float ReweightIBDtoSRN::weight_enu(float truthE, float ctheta, float minE, float binWidth, int nbins, std::vector<float> flux){
 	int binNum = (int) (floor((truthE - minE)/binWidth));
-	if (binNum < 0 || binNum >= nbins){
+	if (binNum < 0 || binNum >= nbins || binNum > flux.size() - 2){
+		//		std::cout << "FAILED " << nbins << " " << binNum << " " << truthE << " " << minE << " " << binWidth << std::endl;
 		return 0;
 	}
 	float residual = (truthE - minE - binWidth * binNum)/binWidth;
 	float yminE = flux[binNum];
 	float yup = flux[binNum + 1];
 	float spec = yup * residual + yminE * (1 - residual);
-	float weightFlux = spec * dsigma_sv(truthE, ctheta) * protonsPerKton * 3600 * 24 * fiducial;
+	float weightFlux = spec * dsigma_sv(truthE, ctheta) * protonsPerKton * fiducial * 3600 * 24 * 2790.1;
+	
 	return weightFlux;
 }
 
@@ -180,4 +240,3 @@ double ReweightIBDtoSRN::dsigma_sv(float enu, double costheta){
 	double dsigmadee = 2 * mp * hbarc2 * pow(Gf * cthc/smp2, 2)/(2 * M_PI) * m2 * fact ;//* rad;
 	return dsigmadee;
 }
-

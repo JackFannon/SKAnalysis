@@ -1,0 +1,3 @@
+myGracefulStop GracefulStop configfiles/PlotSpallTDiff/GracefulStopConfig
+#myTreeReader TreeReader configfiles/PlotSpallTDiff/TreeReaderConfig
+myHistogramPlotter HistogramPlotter configfiles/PlotSpallTDiff/HistogramPlotterConfig

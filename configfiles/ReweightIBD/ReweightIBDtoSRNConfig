@@ -1,2 +1,3 @@
-inputName ../sk6_relic_ana/mc_sim/ibd/flat/IBD_MC_1.root
+inputName /disk02/usr7/jfannon/skdetsim/IBD/sim/IBD_merged.root
 outputName reweightedFile.root
+applyingWeights 1

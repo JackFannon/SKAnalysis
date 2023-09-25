@@ -1,0 +1,3 @@
+input_file /home/jfannon/disk03Data/data_muons.txt
+output_file /home/jfannon/disk03Data/sim/spall/muons/primaries/data_muons
+muons_per_file 250

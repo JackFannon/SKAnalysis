@@ -40,6 +40,8 @@ class RunEnergyCut: public Tool {
 	int verbosity = 1;
 	int m_verbose;
 	int v_error = 0;
+	
+	int Nskipped = 0;
 };
 
 

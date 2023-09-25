@@ -43,6 +43,8 @@ class WallCut: public Tool {
 	int v_error = 0;
 	
 	basic_array<float> reconVertex;
+	
+	int Nskipped = 0;
 };
 
 

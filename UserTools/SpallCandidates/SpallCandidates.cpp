@@ -48,7 +48,6 @@ bool SpallCandidates::Execute(){
 		correctly.
 	*/
 	
-	
 	// get HEADER branch
 	myTreeReader->Get("HEADER", myHeader);
 	triggerID = myHeader->idtgsk;

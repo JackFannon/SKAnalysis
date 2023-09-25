@@ -53,8 +53,16 @@ if (tool=="ODCut") ret=new ODCut;
 if (tool=="RelicMuonMatching") ret=new RelicMuonMatching;
 if (tool=="ReconstructMatchedMuons") ret=new ReconstructMatchedMuons;
 if (tool=="WriteSpallCand") ret=new WriteSpallCand;
+if (tool=="ExtractLowE") ret=new ExtractLowE;
 if (tool=="ReweightIBDtoSRN") ret=new ReweightIBDtoSRN;
-  if (tool=="SpallTMVA") ret=new SpallTMVA;
+if (tool=="ApplySRNWeight") ret=new ApplySRNWeight;
+if (tool=="SpallTMVA") ret=new SpallTMVA;
+if (tool=="HitsCut") ret=new HitsCut;
+if (tool=="WriteMatchedInfo") ret=new WriteMatchedInfo;
+if (tool=="HistogramPlotter") ret=new HistogramPlotter;
+if (tool=="AddMuonInfo") ret=new AddMuonInfo;
+if (tool=="CalcSpadl") ret=new CalcSpadl;
+if (tool=="DatToVect") ret=new DatToVect;
 return ret;
 }
 

@@ -42,6 +42,8 @@ class ODCut: public Tool {
 	
 	std::bitset<sizeof(int)*8>  triggerID;
 	
+	int Nskipped = 0;
+	
 	
 };
 

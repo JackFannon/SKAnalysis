@@ -22,13 +22,29 @@ class ReconstructMatchedMuons: public Tool {
 	
 	private:
 	
+	bool WriteInfo(ParticleCand Event);
+	
 	int currentEntry = -1;
 	
 	std::string treeReaderName;
+	int treeWriterLUN;
+	
 	MTreeReader* myTreeReader = nullptr;
+	MTreeReader* myTreeWriter = nullptr;
+	
 	const Header* myHeader = nullptr;
 	
-	std::deque<ParticleCand> muonsToRec;
+	TTree* WriteTree=nullptr;
+	TBranch* MatchedEvNumsBranch=nullptr;
+	TBranch* MatchedTimeDiffBranch=nullptr;
+	TBranch* PIDBranch=nullptr;
+	
+	std::vector<int> MatchedEvNums;
+	std::vector<float> MatchedTimeDiff;
+	
+	int PID;
+	
+	std::vector<ParticleCand> muonsToRec;
 	
 	int verbosity = 1;
 	int m_verbose;

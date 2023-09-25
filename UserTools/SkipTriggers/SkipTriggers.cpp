@@ -112,8 +112,9 @@ bool SkipTriggers::Execute(){
 	
 	for(int i = 0; i < triggerVect.size(); i++){
 		if((triggerID.test(i) && ! triggerVect[i])){
+			Nskipped++;
 			m_data->vars.Set("Skip",true);
-			std::cout << "Skipped due to triggers" << std::endl;
+			//std::cout << "Skipped due to triggers" << std::endl;
 		}
 	}
 	
@@ -124,6 +125,8 @@ bool SkipTriggers::Execute(){
 bool SkipTriggers::Finalise(){
 	
 	triggerVect.clear();
+	
+	std::cout << "Number of events skipped due to triggers: " << Nskipped << std::endl;
 	
 	return true;
 }

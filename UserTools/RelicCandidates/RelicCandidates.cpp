@@ -27,7 +27,7 @@ bool RelicCandidates::Initialise(std::string configfile, DataModel &data){
 
 
 bool RelicCandidates::Execute(){
-	
+	//	std::cout << "Made it to the reliccandidates tool" << std::endl;
 	bool muonEventFlag = false;
 	
 	m_data->vars.Get("newMuon", muonEventFlag);
@@ -37,6 +37,7 @@ bool RelicCandidates::Execute(){
 	if(!muonEventFlag){
 		m_data->vars.Set("newRelic", true);
 	}
+	
 	
 	return true;
 }

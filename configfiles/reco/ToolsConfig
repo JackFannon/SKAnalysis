@@ -1,0 +1,3 @@
+myGracefulStop GracefulStop configfiles/reco/GracefulStopConfig
+myTreeReader TreeReader configfiles/reco/TreeReaderConfig
+mylf_allfit_new lf_allfit_new configfiles/reco/lf_allfit_newConfig

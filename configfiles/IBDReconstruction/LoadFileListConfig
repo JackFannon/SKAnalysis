@@ -1,0 +1,5 @@
+verbosity 100
+FileListName MyFileList                                                  # required argument
+filePattern "*.root"
+inputDirectory /disk02/usr7/jfannon/skdetsim/spall/
+useRegex 0  # 1=regex, 0=glob                                            # default = glob
