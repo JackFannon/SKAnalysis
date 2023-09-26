@@ -104,6 +104,8 @@ bool evPlot::Execute() {
   plotCanvas->cd(1);
   hitTimesAndCharges->Draw("COLZ");
 
+  gPad->WaitPrimitive();
+
   std::cout << "Hit enter to continue..." << std::endl;
   std::cin.get();
 
