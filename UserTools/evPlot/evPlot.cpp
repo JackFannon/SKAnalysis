@@ -21,9 +21,9 @@ bool evPlot::Initialise(std::string configfile, DataModel &data) {
     Log("ERROR: TreeReader " + treeReaderName + " not found!", v_error,
         verbosity);
     return false;
-  } else {
-    myTreeReader = m_data->Trees.at(treeReaderName);
   }
+
+  myTreeReader = m_data->Trees.at(treeReaderName);
 
   if (!m_variables.Get("verbose", m_verbose))
     m_verbose = 1;
@@ -61,6 +61,9 @@ bool evPlot::Initialise(std::string configfile, DataModel &data) {
   plotPad = plotCanvas->cd(2);
   plotPad->Divide(2, 1);
   plotCanvas->cd(2);
+
+  // Get the TQReal branch
+  myTreeReader->Get("TQREAL", myTQReal);
 
   return true;
 }
