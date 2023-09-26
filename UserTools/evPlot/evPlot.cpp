@@ -117,6 +117,11 @@ bool evPlot::Execute() {
   std::cout << "Hit enter to continue..." << std::endl;
   std::cin.get();
 
+  // Clear histograms
+  hitTimes->Clear();
+  hitCharges->Clear();
+  hitTimesAndCharges->Clear();
+
   return true;
 }
 
