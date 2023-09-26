@@ -69,11 +69,15 @@ bool evPlot::Execute() {
 
   // Get the number of hit PMTs from the TQReal branch
   totalPMTsHit = myTQReal->cables.size();
+
+  std::cout << "THIS NUMBER OF CABLES " << std::endl;
+
   if (totalPMTsHit == 0) {
     std::cout << "No PMTs hit in this event!" << std::endl;
     return true;
   }
 
+  /*
   // Loop over the hit PMTs and fill the histograms, call the iterator pmtNumber
   for (int pmtNumber = 0; pmtNumber < totalPMTsHit; ++pmtNumber) {
     cableNumber = myTQReal->cables.at(pmtNumber);
@@ -85,7 +89,7 @@ bool evPlot::Execute() {
     hitCharges->Fill(charge);
     hitTimesAndCharges->Fill(time, charge);
   }
-  /*
+
     // Draw the histograms
     plotPad->cd(1);
     hitTimes->Draw();
