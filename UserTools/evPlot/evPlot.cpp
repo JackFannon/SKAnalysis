@@ -94,6 +94,8 @@ bool evPlot::Execute() {
   plotCanvas->cd(1);
   hitTimesAndCharges->Draw("COLZ");
 
+  gPad->WaitPrimitive();
+
   return true;
 }
 
