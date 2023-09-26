@@ -1,0 +1,1 @@
+hitLimit 999999    # Limit for the number of hits. An events with more than this number will skip the rest of the chain

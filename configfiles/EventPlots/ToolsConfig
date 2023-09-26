@@ -1,0 +1,5 @@
+myGracefulStop GracefulStop configfiles/EventPlots/GracefulStopConfig
+myTreeReader TreeReader configfiles/EventPlots/TreeReaderConfig
+mySkipTriggers SkipTriggers configfiles/EventPlots/SkipTriggersConfig
+myHitsCut HitsCut configfiles/EventPlots/HitsCutConfig
+myevPlot evPlot configfiles/EventPlots/evPlotConfig
