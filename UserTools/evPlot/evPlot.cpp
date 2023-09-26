@@ -118,9 +118,9 @@ bool evPlot::Execute() {
   std::cin.get();
 
   // Clear histograms
-  hitTimes->Clear();
-  hitCharges->Clear();
-  hitTimesAndCharges->Clear();
+  hitTimes->Reset();
+  hitCharges->Reset();
+  hitTimesAndCharges->Reset();
 
   return true;
 }
