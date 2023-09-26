@@ -82,6 +82,12 @@ bool evPlot::Execute() {
     return true;
   }
 
+  // If number of actual hits is less than 10000 then skip
+  if (sktqz_.nqiskz < 10000) {
+    std::cout << "Number of hits is less than 10000, skipping..." << std::endl;
+    return true;
+  }
+
   // Loop over the hit PMTs and fill the histograms, call the iterator pmtNumber
   for (int pmtNumber = 0; pmtNumber < totalPMTsHit; ++pmtNumber) {
     // cableNumber = myTQReal->cables.at(pmtNumber);
