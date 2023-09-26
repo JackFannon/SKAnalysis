@@ -4,6 +4,8 @@
 
 Dependencies=`pwd`/Dependencies
 
+source ../SKG4/G4ROOTsource.sh
+
 export LD_LIBRARY_PATH=`pwd`/lib:${Dependencies}/TMVA/lib:$LD_LIBRARY_PATH
 
 for folder in `ls -d ${PWD}/UserTools/*/ `
