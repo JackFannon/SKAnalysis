@@ -63,6 +63,7 @@ if (tool=="HistogramPlotter") ret=new HistogramPlotter;
 if (tool=="AddMuonInfo") ret=new AddMuonInfo;
 if (tool=="CalcSpadl") ret=new CalcSpadl;
 if (tool=="DatToVect") ret=new DatToVect;
+  if (tool=="evPlot") ret=new evPlot;
 return ret;
 }
 
