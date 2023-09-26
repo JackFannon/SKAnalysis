@@ -1,5 +1,7 @@
 #include "evPlot.h"
 
+#include "sktqC.h"
+
 evPlot::evPlot() : Tool() {}
 
 bool evPlot::Initialise(std::string configfile, DataModel &data) {
@@ -69,10 +71,11 @@ bool evPlot::Initialise(std::string configfile, DataModel &data) {
 }
 
 bool evPlot::Execute() {
-  std::cout << "THIS NUMBER OF CABLES " << std::endl;
 
   // Get the number of hit PMTs from the TQReal branch
-  totalPMTsHit = myTQReal->cables.size();
+  // totalPMTsHit = myTQReal->cables.size();
+  totalPMTsHit = sktqz_.nqiskz;
+  std::cout << "THIS NUMBER OF CABLES " << totalPMTsHit << std::endl;
 
   if (totalPMTsHit == 0) {
     std::cout << "No PMTs hit in this event!" << std::endl;
