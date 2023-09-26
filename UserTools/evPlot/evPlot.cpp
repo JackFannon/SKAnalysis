@@ -79,7 +79,6 @@ bool evPlot::Execute() {
     return true;
   }
 
-  /*
   // Loop over the hit PMTs and fill the histograms, call the iterator pmtNumber
   for (int pmtNumber = 0; pmtNumber < totalPMTsHit; ++pmtNumber) {
     cableNumber = myTQReal->cables.at(pmtNumber);
@@ -92,16 +91,16 @@ bool evPlot::Execute() {
     hitTimesAndCharges->Fill(time, charge);
   }
 
-    // Draw the histograms
-    plotPad->cd(1);
-    hitTimes->Draw();
-    plotPad->cd(2);
-    hitCharges->Draw();
-    plotCanvas->cd(1);
-    hitTimesAndCharges->Draw("COLZ");
+  // Draw the histograms
+  plotPad->cd(1);
+  hitTimes->Draw();
+  plotPad->cd(2);
+  hitCharges->Draw();
+  plotCanvas->cd(1);
+  hitTimesAndCharges->Draw("COLZ");
 
-    gPad->WaitPrimitive();
-  */
+  gPad->WaitPrimitive();
+
   return true;
 }
 
