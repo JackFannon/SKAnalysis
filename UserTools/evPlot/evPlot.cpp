@@ -66,10 +66,6 @@ bool evPlot::Initialise(std::string configfile, DataModel &data) {
   hitTimesAndCharges->GetYaxis()->SetTitle("Charge (pC)");
 
   hitTimesVsCharges = new TGraph();
-  hitTimesVsCharges->GetXaxis()->SetTitle("Time (ns)");
-  hitTimesVsCharges->GetYaxis()->SetTitle("Charge (pC)");
-  hitTimesVsCharges->GetXaxis()->SetLimits(1.0 * Tmin, 1.0 * Tmax);
-  hitTimesVsCharges->GetYaxis()->SetLimits(1.0 * Qmin, 1.0 * Qmax);
 
   /* Create the canvas and divide it up
     -------------------
@@ -177,6 +173,11 @@ bool evPlot::Execute() {
   hitTimesAndCharges->Draw("COLZ");
   plotCanvas->cd(3);
   hitTimesVsCharges->Draw("AP");
+
+  hitTimesVsCharges->GetXaxis()->SetTitle("Time (ns)");
+  hitTimesVsCharges->GetYaxis()->SetTitle("Charge (pC)");
+  hitTimesVsCharges->GetXaxis()->SetLimits(1.0 * Tmin, 1.0 * Tmax);
+  hitTimesVsCharges->GetYaxis()->SetLimits(1.0 * Qmin, 1.0 * Qmax);
 
   plotCanvas->cd();
   plotCanvas->Modified();
