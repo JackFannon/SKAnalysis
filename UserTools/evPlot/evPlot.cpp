@@ -98,8 +98,8 @@ bool evPlot::Execute() {
     // time = myTQReal->T.at(pmtNumber);
     cableNumber = sktqz_.icabiz[pmtNumber];
     std::cout << "Cable number: " << cableNumber << std::endl;
-    charge = skq_.qisk[cableNumber - 1];
-    time = skt_.tisk[cableNumber - 1];
+    charge = skq_.qisk[cableNumber];
+    time = skt_.tisk[cableNumber];
     // Fill the histograms
     hitTimes->Fill(time);
     hitCharges->Fill(charge);
