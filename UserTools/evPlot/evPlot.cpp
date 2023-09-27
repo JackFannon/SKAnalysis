@@ -1,5 +1,6 @@
 #include "evPlot.h"
 
+#include "TError.h"
 #include "TROOT.h"
 #include "skheadC.h"
 #include "sktqC.h"
@@ -11,6 +12,8 @@ evPlot::evPlot() : Tool() {}
 bool evPlot::Initialise(std::string configfile, DataModel &data) {
 
   gROOT->SetBatch(1);
+
+  gErrorIgnoreLevel = kWarning;
 
   if (configfile != "")
     m_variables.Initialise(configfile);
