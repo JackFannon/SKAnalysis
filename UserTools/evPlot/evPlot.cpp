@@ -34,7 +34,7 @@ bool evPlot::Initialise(std::string configfile, DataModel &data) {
     m_verbose = 1;
 
   // Initialise the histograms
-  hitTimes = new TH1D("hitTimes", "Hit Times", 300, -15000, 15000);
+  hitTimes = new TH1D("hitTimes", "Hit Times", 300, -10000, 20000);
   hitTimes->SetLineColor(38);
   hitTimes->SetFillColor(38);
   hitTimes->GetXaxis()->SetTitle("Time (ns)");
