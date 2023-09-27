@@ -97,7 +97,6 @@ bool evPlot::Execute() {
     // charge = myTQReal->Q.at(pmtNumber);
     // time = myTQReal->T.at(pmtNumber);
     cableNumber = sktqz_.icabiz[pmtNumber];
-    std::cout << "Cable number: " << cableNumber << std::endl;
     charge = sktqz_.qiskz[cableNumber - 1];
     time = sktqz_.tiskz[cableNumber - 1];
     // Fill the histograms
