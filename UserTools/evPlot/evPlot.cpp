@@ -82,7 +82,9 @@ bool evPlot::Execute() {
   // Get the number of hit PMTs from the TQReal branch
   // totalPMTsHit = myTQReal->cables.size();
   totalPMTsHit = sktqz_.nqiskz;
-  std::cout << "THIS NUMBER OF CABLES " << totalPMTsHit << std::endl;
+
+  // Print trigger ID
+  std::cout << "Trigger ID: " << myHeader->idtgsk << std::endl;
 
   if (totalPMTsHit == 0) {
     std::cout << "No PMTs hit in this event!" << std::endl;
