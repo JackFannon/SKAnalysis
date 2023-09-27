@@ -2,6 +2,7 @@
 
 #include "TROOT.h"
 #include "sktqC.h"
+#include <string>
 
 evPlot::evPlot() : Tool() {}
 
@@ -67,7 +68,10 @@ bool evPlot::Initialise(std::string configfile, DataModel &data) {
   plotPad->Divide(2, 1);
   plotCanvas->cd(2);
 
-  // Get the TQReal branch
+  plotCanvas->Print("test_output.pdf[");
+
+  // Get Header and TQReal branches
+  myTreeReader->Get("Header", myHeader);
   myTreeReader->Get("TQREAL", myTQReal);
 
   return true;
@@ -132,10 +136,12 @@ bool evPlot::Execute() {
   plotCanvas->Modified();
   plotCanvas->Update();
 
-  plotCanvas->SaveAs("testOutput.png");
+  // Append the plot to a pdf on a new page
+  plotCanvas->Print("test_output.pdf",
+                    ("Title: " + std::to_string(myHeader->nevsk)).c_str());
 
-  std::cout << "Hit enter to continue..." << std::endl;
-  std::cin.get();
+  // std::cout << "Hit enter to continue..." << std::endl;
+  // std::cin.get();
 
   // Clear histograms
   hitTimes->Reset();
@@ -145,4 +151,9 @@ bool evPlot::Execute() {
   return true;
 }
 
-bool evPlot::Finalise() { return true; }
+bool evPlot::Finalise() {
+
+  plotCanvas->Print("test_output.pdf]");
+
+  return true;
+}
