@@ -47,7 +47,7 @@ bool evPlot::Initialise(std::string configfile, DataModel &data) {
     m_verbose = 1;
 
   // Disable axis ticks
-  gStyle->SetTickLength(0., "Y");
+  // gStyle->SetTickLength(0., "Y");
   // Initialise the histograms
   hitTimes = new TH1D("hitTimes", "Hit Times", (Tmax - Tmin) / 10, Tmin, Tmax);
   hitTimes->SetLineColor(38);
