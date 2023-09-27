@@ -101,9 +101,11 @@ bool evPlot::Execute() {
     charge = sktqz_.qiskz[cableNumber - 1];
     time = sktqz_.tiskz[cableNumber - 1];
     // Fill the histograms
-    hitTimes->Fill(time);
-    hitCharges->Fill(charge);
-    hitTimesAndCharges->Fill(time, charge);
+    if (time != 0) {
+      hitTimes->Fill(time);
+      hitCharges->Fill(charge);
+      hitTimesAndCharges->Fill(time, charge);
+    }
   }
 
   // double minval = hitTimes->GetMinimum();
