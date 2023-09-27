@@ -68,8 +68,8 @@ bool evPlot::Initialise(std::string configfile, DataModel &data) {
   hitTimesVsCharges = new TGraph();
   hitTimesVsCharges->GetXaxis()->SetTitle("Time (ns)");
   hitTimesVsCharges->GetYaxis()->SetTitle("Charge (pC)");
-  hitTimesVsCharges->GetXaxis()->SetLimits(Tmin, Tmax);
-  hitTimesVsCharges->GetYaxis()->SetLimits(Qmin, Qmax);
+  hitTimesVsCharges->GetXaxis()->SetLimits(1.0 * Tmin, 1.0 * Tmax);
+  hitTimesVsCharges->GetYaxis()->SetLimits(1.0 * Qmin, 1.0 * Qmax);
 
   /* Create the canvas and divide it up
     -------------------
