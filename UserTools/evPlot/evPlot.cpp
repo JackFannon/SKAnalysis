@@ -1,6 +1,7 @@
 #include "evPlot.h"
 
 #include "TROOT.h"
+#include "skheadC.h"
 #include "sktqC.h"
 #include <bitset>
 #include <string>
@@ -85,7 +86,7 @@ bool evPlot::Execute() {
   totalPMTsHit = sktqz_.nqiskz;
 
   std::bitset<sizeof(int) * 8> triggerID;
-  triggerID = myHeader->idtgsk;
+  triggerID = skhead_.idtgsk;
   // initlialise string Trigs to store trigger strings in
   std::string Trigs;
   // loop over the 31 trigger IDs and check if the trigger bit for each ID, i,
