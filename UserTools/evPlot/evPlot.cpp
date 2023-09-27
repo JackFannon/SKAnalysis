@@ -146,7 +146,7 @@ bool evPlot::Execute() {
       hitTimes->Fill(time);
       hitCharges->Fill(charge);
       hitTimesAndCharges->Fill(time, charge);
-      if (time > Tmin && time < Tmax) {
+      if (time > Tmin && time < Tmax && charge > Qmin) {
         hitTimesVsCharges->SetPoint(pmtNumber, time, charge);
       }
     }
