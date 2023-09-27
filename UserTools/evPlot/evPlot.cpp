@@ -105,7 +105,7 @@ bool evPlot::Execute() {
     charge = sktqz_.qiskz[cableNumber - 1];
     time = sktqz_.tiskz[cableNumber - 1];
     // Fill the histograms
-    if (time != 0) {
+    if (charge != 0) {
       hitTimes->Fill(time);
       hitCharges->Fill(charge);
       hitTimesAndCharges->Fill(time, charge);
