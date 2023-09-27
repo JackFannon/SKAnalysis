@@ -34,18 +34,18 @@ bool evPlot::Initialise(std::string configfile, DataModel &data) {
     m_verbose = 1;
 
   // Initialise the histograms
-  hitTimes = new TH1D("hitTimes", "Hit Times", 1000, 0, 15000);
+  hitTimes = new TH1D("hitTimes", "Hit Times", 300, -15000, 15000);
   hitTimes->SetLineColor(38);
   hitTimes->SetFillColor(38);
   hitTimes->GetXaxis()->SetTitle("Time (ns)");
 
-  hitCharges = new TH1D("hitCharges", "Hit Charges", 100, 0, 1100);
+  hitCharges = new TH1D("hitCharges", "Hit Charges", 220, -1100, 1100);
   hitCharges->SetLineColor(46);
   hitCharges->SetFillColor(46);
   hitCharges->GetXaxis()->SetTitle("Charge (pC)");
 
   hitTimesAndCharges = new TH2D("hitTimesAndCharges", "Hit Times and Charges",
-                                150, 0, 1500, 110, 0, 1100);
+                                300, -15000, 15000, 220, -1100, 1100);
   hitTimesAndCharges->GetXaxis()->SetTitle("Time (ns)");
   hitTimesAndCharges->GetYaxis()->SetTitle("Charge (pC)");
 
