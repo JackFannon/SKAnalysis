@@ -1,10 +1,13 @@
 #include "evPlot.h"
 
+#include "TROOT.h"
 #include "sktqC.h"
 
 evPlot::evPlot() : Tool() {}
 
 bool evPlot::Initialise(std::string configfile, DataModel &data) {
+
+  gROOT->SetBatch(1);
 
   if (configfile != "")
     m_variables.Initialise(configfile);
@@ -123,6 +126,8 @@ bool evPlot::Execute() {
   plotCanvas->cd();
   plotCanvas->Modified();
   plotCanvas->Update();
+
+  plotCanvas->SaveAs("testOutput.png");
 
   std::cout << "Hit enter to continue..." << std::endl;
   std::cin.get();
