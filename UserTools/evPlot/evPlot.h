@@ -4,9 +4,10 @@
 #include <iostream>
 #include <string>
 
-#include "TCanvas.h"
-#include "TH1.h"
-#include "TH2.h"
+#include <TCanvas.h>
+#include <TGraph.h>
+#include <TH1.h>
+#include <TH2.h>
 
 #include "MTreeReader.h"
 #include "Tool.h"
@@ -51,10 +52,11 @@ public:
   TCanvas *plotCanvas = nullptr;
   TVirtualPad *plotPad = nullptr;
 
-  // Histograms
+  // Histograms and graph
   TH1D *hitTimes = nullptr;
   TH1D *hitCharges = nullptr;
   TH2D *hitTimesAndCharges = nullptr;
+  TGraph *hitTimesVsCharges = nullptr;
 
   // Branches
   const Header *myHeader = nullptr;

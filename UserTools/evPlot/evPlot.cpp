@@ -64,11 +64,15 @@ bool evPlot::Initialise(std::string configfile, DataModel &data) {
    | -------   ------- |
    ||  TIME | | CHRGE ||
    | -------   ------- |
+   | ----------------- |
+   ||      GRAPH      ||
+   ||     T vs Q      ||
+   | ----------------- |
     -------------------
   */
 
   plotCanvas = new TCanvas("displayCanvas", "Display Canvas", 1920, 1080);
-  plotCanvas->Divide(1, 2);
+  plotCanvas->Divide(1, 3);
   plotPad = plotCanvas->cd(2);
   plotPad->Divide(2, 1);
   plotCanvas->cd(2);
@@ -116,6 +120,8 @@ bool evPlot::Execute() {
     return true;
   }
 
+  hitTimesVsCharges = new TGraph();
+
   // Loop over the hit PMTs and fill the histograms, call the iterator pmtNumber
   for (int pmtNumber = 0; pmtNumber < totalPMTsHit; ++pmtNumber) {
     // cableNumber = myTQReal->cables.at(pmtNumber);
@@ -130,6 +136,7 @@ bool evPlot::Execute() {
       hitTimes->Fill(time);
       hitCharges->Fill(charge);
       hitTimesAndCharges->Fill(time, charge);
+      hitTimesVsCharges->SetPoint(pmtNumber, time, charge);
     }
   }
 
@@ -152,6 +159,8 @@ bool evPlot::Execute() {
   hitCharges->Draw();
   plotCanvas->cd(1);
   hitTimesAndCharges->Draw("COLZ");
+  plotCanvas->cd(3);
+  hitTimesVsCharges->Draw("AP");
 
   plotCanvas->cd();
   plotCanvas->Modified();
