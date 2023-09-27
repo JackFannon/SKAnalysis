@@ -46,8 +46,12 @@ bool evPlot::Initialise(std::string configfile, DataModel &data) {
   if (!m_variables.Get("verbose", m_verbose))
     m_verbose = 1;
 
-  // Disable axis ticks
+  // GStyle stuff
+  // No axis ticks
   gStyle->SetTickLength(0., "Y");
+  // No stats box
+  gStyle->SetOptStat(0);
+
   // Initialise the histograms
   hitTimes = new TH1D("hitTimes", "Hit Times", (Tmax - Tmin) / 10, Tmin, Tmax);
   hitTimes->SetLineColor(38);
