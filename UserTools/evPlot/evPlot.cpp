@@ -26,6 +26,10 @@ bool evPlot::Initialise(std::string configfile, DataModel &data) {
   // directory, etc.
   m_variables.Get("treeReaderName", treeReaderName);
   m_variables.Get("outputDir", outputDir);
+  m_variables.Get("Tmin", Tmin);
+  m_variables.Get("Tmax", Tmax);
+  m_variables.Get("Qmin", Qmin);
+  m_variables.Get("Qmax", Qmax);
 
   // Get the TreeReader
   if (m_data->Trees.count(treeReaderName) == 0) {
@@ -40,12 +44,13 @@ bool evPlot::Initialise(std::string configfile, DataModel &data) {
     m_verbose = 1;
 
   // Initialise the histograms
-  hitTimes = new TH1D("hitTimes", "Hit Times", 130, 1000, 2300);
+  hitTimes = new TH1D("hitTimes", "Hit Times", (Tmax - Tmin) / 10, Tmin, Tmax);
   hitTimes->SetLineColor(38);
   hitTimes->SetFillColor(38);
   hitTimes->GetXaxis()->SetTitle("Time (ns)");
 
-  hitCharges = new TH1D("hitCharges", "Hit Charges", 100, 0, 10);
+  hitCharges =
+      new TH1D("hitCharges", "Hit Charges", (Qmax - Qmin) * 10, Qmin, Qmax);
   hitCharges->SetLineColor(46);
   hitCharges->SetFillColor(46);
   hitCharges->GetXaxis()->SetTitle("Charge (pC)");
@@ -136,7 +141,9 @@ bool evPlot::Execute() {
       hitTimes->Fill(time);
       hitCharges->Fill(charge);
       hitTimesAndCharges->Fill(time, charge);
-      hitTimesVsCharges->SetPoint(pmtNumber, time, charge);
+      if (time > Tmin && time < Tmax && charge > Qmin && charge < Qmax) {
+        hitTimesVsCharges->SetPoint(pmtNumber, time, charge);
+      }
     }
   }
 

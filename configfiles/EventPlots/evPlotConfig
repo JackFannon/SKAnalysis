@@ -1,2 +1,6 @@
 treeReaderName reader
 outputDir .
+Tmin 1000
+Tmax 2300
+Qmin 0
+Qmax 10

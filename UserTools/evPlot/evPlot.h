@@ -41,9 +41,10 @@ public:
   // Tool config
   std::string treeReaderName;
   std::string outputDir;
-  bool plotHitTimes;
-  bool plotHitCharges;
-  bool plotHTandC;
+  int Tmin;
+  int Tmax;
+  int Qmin;
+  int Qmax;
 
   // Tree reader
   MTreeReader *myTreeReader = nullptr;
