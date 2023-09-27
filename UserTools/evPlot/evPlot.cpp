@@ -99,21 +99,9 @@ bool evPlot::Execute() {
     if (triggerID.test(i))
       Trigs += " " + TriggerIDToTrigger(i) + ",";
   }
-  // check that Trigs is not empty, or pop_back makes evDisp fail the execute
-  // if Trigs is not empty then print the trigger flags that were set for the
-  // event if not print a warning for the event that no trigger falgs were found
-  if (!Trigs.empty()) {
-    Trigs.pop_back();
-    std::cout << "Trigger flags set:" << Trigs << "." << std::endl;
-  } else {
-    std::cout
-        << "WARNING - There were no trigger flags set/found for this event."
-        << std::endl;
-  }
 
   // Only pass if the HE and OD triggers are set
   if (!(triggerID.test(1) && triggerID.test(3))) {
-    std::cout << "HE or OD trigger not set, skipping..." << std::endl;
     return true;
   }
 
