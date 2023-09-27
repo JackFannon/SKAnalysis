@@ -137,8 +137,7 @@ bool evPlot::Execute() {
   plotCanvas->Update();
 
   // Append the plot to a pdf on a new page
-  plotCanvas->Print("test_output.pdf",
-                    ("Title: " + std::to_string(myHeader->nevsk)).c_str());
+  plotCanvas->Print("test_output.pdf");
 
   // std::cout << "Hit enter to continue..." << std::endl;
   // std::cin.get();
