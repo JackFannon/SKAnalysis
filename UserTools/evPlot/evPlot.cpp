@@ -86,7 +86,7 @@ bool evPlot::Execute() {
   }
 
   // If number of actual hits is less than 10000 then skip
-  if (sktqz_.nqiskz < 10000) {
+  if (sktqz_.nqiskz < 0) {
     std::cout << "Number of hits is less than 10000, skipping..." << std::endl;
     return true;
   }
@@ -98,8 +98,8 @@ bool evPlot::Execute() {
     // time = myTQReal->T.at(pmtNumber);
     cableNumber = sktqz_.icabiz[pmtNumber];
     std::cout << "Cable number: " << cableNumber << std::endl;
-    charge = skq_.qisk[cableNumber];
-    time = skt_.tisk[cableNumber];
+    charge = sktqz_.qiskz[cableNumber - 1];
+    time = sktqz_.tiskz[cableNumber - 1];
     // Fill the histograms
     hitTimes->Fill(time);
     hitCharges->Fill(charge);
