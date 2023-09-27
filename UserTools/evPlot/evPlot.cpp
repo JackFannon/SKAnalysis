@@ -108,6 +108,12 @@ bool evPlot::Execute() {
         << std::endl;
   }
 
+  // Only pass if the HE and OD triggers are set
+  if (!(triggerID.test(1) && triggerID.test(3))) {
+    std::cout << "HE or OD trigger not set, skipping..." << std::endl;
+    return true;
+  }
+
   if (totalPMTsHit == 0) {
     std::cout << "No PMTs hit in this event!" << std::endl;
     return true;
