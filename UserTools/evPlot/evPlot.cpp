@@ -106,17 +106,17 @@ bool evPlot::Execute() {
     hitTimesAndCharges->Fill(time, charge);
   }
 
-  double minval = hitTimes->GetMinimum();
-  double maxval = hitTimes->GetMaximum();
-  std::cout << "Minval: " << minval << std::endl;
-  std::cout << "Maxval: " << maxval << std::endl;
-  hitTimes->GetXaxis()->SetRangeUser(minval, maxval);
-  hitTimesAndCharges->GetXaxis()->SetRangeUser(minval, maxval);
+  // double minval = hitTimes->GetMinimum();
+  // double maxval = hitTimes->GetMaximum();
+  // std::cout << "Minval: " << minval << std::endl;
+  // std::cout << "Maxval: " << maxval << std::endl;
+  // hitTimes->GetXaxis()->SetRangeUser(minval, maxval);
+  // hitTimesAndCharges->GetXaxis()->SetRangeUser(minval, maxval);
 
-  minval = hitCharges->GetMinimum();
-  maxval = hitCharges->GetMaximum();
-  hitCharges->GetXaxis()->SetRangeUser(minval, maxval);
-  hitTimesAndCharges->GetYaxis()->SetRangeUser(minval, maxval);
+  // minval = hitCharges->GetMinimum();
+  // maxval = hitCharges->GetMaximum();
+  // hitCharges->GetXaxis()->SetRangeUser(minval, maxval);
+  // hitTimesAndCharges->GetYaxis()->SetRangeUser(minval, maxval);
 
   // Draw the histograms
   plotPad->cd(1);
