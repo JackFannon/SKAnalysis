@@ -2,8 +2,11 @@
 
 #include "TError.h"
 #include "TROOT.h"
+#include "TStyle.h"
+
 #include "skheadC.h"
 #include "sktqC.h"
+
 #include <bitset>
 #include <string>
 
@@ -43,6 +46,8 @@ bool evPlot::Initialise(std::string configfile, DataModel &data) {
   if (!m_variables.Get("verbose", m_verbose))
     m_verbose = 1;
 
+  // Disable axis ticks
+  gStyle->SetTickLength(0.);
   // Initialise the histograms
   hitTimes = new TH1D("hitTimes", "Hit Times", (Tmax - Tmin) / 10, Tmin, Tmax);
   hitTimes->SetLineColor(38);
@@ -59,6 +64,12 @@ bool evPlot::Initialise(std::string configfile, DataModel &data) {
                                 650, 1000, 2300, 20, 0, 10);
   hitTimesAndCharges->GetXaxis()->SetTitle("Time (ns)");
   hitTimesAndCharges->GetYaxis()->SetTitle("Charge (pC)");
+
+  hitTimesVsCharges = new TGraph();
+  hitTimesVsCharges->GetXaxis()->SetTitle("Time (ns)");
+  hitTimesVsCharges->GetYaxis()->SetTitle("Charge (pC)");
+  hitTimesVsCharges->GetXaxis()->SetLimits(Tmin, Tmax);
+  hitTimesVsCharges->GetYaxis()->SetLimits(Qmin, Qmax);
 
   /* Create the canvas and divide it up
     -------------------
@@ -124,8 +135,6 @@ bool evPlot::Execute() {
     std::cout << "Number of hits is less than 10000, skipping..." << std::endl;
     return true;
   }
-
-  hitTimesVsCharges = new TGraph();
 
   // Loop over the hit PMTs and fill the histograms, call the iterator pmtNumber
   for (int pmtNumber = 0; pmtNumber < totalPMTsHit; ++pmtNumber) {
