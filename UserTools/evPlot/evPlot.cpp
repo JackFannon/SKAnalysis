@@ -84,7 +84,7 @@ bool evPlot::Execute() {
   totalPMTsHit = sktqz_.nqiskz;
 
   // Print trigger ID
-  std::cout << "Trigger ID: " << myHeader->idtgsk << std::endl;
+  std::cout << "Trigger ID: " << std::to_string(myHeader->idtgsk) << std::endl;
 
   if (totalPMTsHit == 0) {
     std::cout << "No PMTs hit in this event!" << std::endl;
