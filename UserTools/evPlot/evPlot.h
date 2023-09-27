@@ -63,7 +63,7 @@ public:
   // Plotting variables
   int totalPMTsHit = -1;
   int cableNumber;
-  int charge;
+  float charge;
   float time;
 
   // Verbosity
