@@ -107,6 +107,8 @@ bool evPlot::Execute() {
 
   double minval = hitTimes->GetMinimum();
   double maxval = hitTimes->GetMaximum();
+  std::cout << "Minval: " << minval << std::endl;
+  std::cout << "Maxval: " << maxval << std::endl;
   hitTimes->GetXaxis()->SetRangeUser(minval, maxval);
   hitTimesAndCharges->GetXaxis()->SetRangeUser(minval, maxval);
 
