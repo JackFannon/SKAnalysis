@@ -19,3 +19,4 @@ BStore_Linkdef_1.hh
 .cache
 .dir-locals.el
 *.json
+*.png

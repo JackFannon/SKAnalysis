@@ -99,6 +99,7 @@ bool evPlot::Execute() {
     cableNumber = sktqz_.icabiz[pmtNumber];
     charge = sktqz_.qiskz[cableNumber - 1];
     time = sktqz_.tiskz[cableNumber - 1];
+    std::cout << "Time: " << time << std::endl;
     // Fill the histograms
     hitTimes->Fill(time);
     hitCharges->Fill(charge);
