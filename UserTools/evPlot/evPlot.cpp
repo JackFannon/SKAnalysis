@@ -122,21 +122,20 @@ bool evPlot::Execute() {
     return true;
   }
 
-  if (totalPMTsHit == 0) {
-    std::cout << "No PMTs hit in this event!" << std::endl;
-    return true;
-  }
-
-  // If number of actual hits is less than 10000 then skip
-  if (sktqz_.nqiskz < 0) {
-    std::cout << "Number of hits is less than 10000, skipping..." << std::endl;
-    return true;
-  }
-
   switch (dataSrc) {
   case 0: {
     // sktq common
     totalPMTsHit = sktqz_.nqiskz;
+    if (totalPMTsHit == 0) {
+      std::cout << "No PMTs hit in this event!" << std::endl;
+      return true;
+    }
+    // If number of actual hits is less than 10000 then skip
+    if (sktqz_.nqiskz < 0) {
+      std::cout << "Number of hits is less than 10000, skipping..."
+                << std::endl;
+      return true;
+    }
     // Loop over the hits
     for (int hitNumber = 0; hitNumber < totalPMTsHit; ++hitNumber) {
       cableNumber = sktqz_.icabiz[hitNumber];
@@ -157,6 +156,16 @@ bool evPlot::Execute() {
     std::cout << "skt and skq common" << std::endl;
     // skt and skq commons
     totalPMTsHit = skq_.nqisk;
+    if (totalPMTsHit == 0) {
+      std::cout << "No PMTs hit in this event!" << std::endl;
+      return true;
+    }
+    // If number of actual hits is less than 10000 then skip
+    if (sktqz_.nqiskz < 0) {
+      std::cout << "Number of hits is less than 10000, skipping..."
+                << std::endl;
+      return true;
+    }
     // Loop over the hits
     for (int hitNumber = 0; hitNumber < totalPMTsHit; ++hitNumber) {
       cableNumber = skchnl_.ihcab[hitNumber];
@@ -176,6 +185,16 @@ bool evPlot::Execute() {
   case 2: {
     // tqreal branch
     totalPMTsHit = myTQReal->cables.size();
+    if (totalPMTsHit == 0) {
+      std::cout << "No PMTs hit in this event!" << std::endl;
+      return true;
+    }
+    // If number of actual hits is less than 10000 then skip
+    if (sktqz_.nqiskz < 0) {
+      std::cout << "Number of hits is less than 10000, skipping..."
+                << std::endl;
+      return true;
+    }
     // Loop over the hits
     for (int hitNumber = 0; hitNumber < totalPMTsHit; ++hitNumber) {
       cableNumber = myTQReal->cables.at(hitNumber);
