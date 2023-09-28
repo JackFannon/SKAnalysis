@@ -6,11 +6,16 @@
 
 #include "skheadC.h"
 #include "sktqC.h"
+#include "type_name_as_string.h"
 
 #include <bitset>
 #include <string>
 
-evPlot::evPlot() : Tool() {}
+evPlot::evPlot() : Tool() {
+  // Get the name of the tool
+  toolName = type_name<decltype(this)>();
+  toolName.pop_back();
+}
 
 bool evPlot::Initialise(std::string configfile, DataModel &data) {
 
@@ -142,6 +147,7 @@ bool evPlot::Execute() {
     for (int hitNumber = 0; hitNumber < totalPMTsHit; ++hitNumber) {
       cableNumber = sktqz_.icabiz[hitNumber];
       charge = sktqz_.qiskz[hitNumber];
+      time = sktqz_.tiskz[hitNumber];
       // Fill the histograms
       if (charge != 0) {
         hitTimes->Fill(time);
@@ -151,8 +157,8 @@ bool evPlot::Execute() {
           hitTimesVsCharges->SetPoint(hitNumber, time, charge);
         }
       }
-      time = sktqz_.tiskz[hitNumber];
     }
+    break;
   }
   case 1: {
     std::cout << "skt and skq common" << std::endl;
@@ -172,6 +178,7 @@ bool evPlot::Execute() {
     for (int hitNumber = 0; hitNumber < totalPMTsHit; ++hitNumber) {
       cableNumber = skchnl_.ihcab[hitNumber];
       charge = skq_.qisk[cableNumber - 1];
+      time = skt_.tisk[cableNumber - 1];
       // Fill the histograms
       if (charge != 0) {
         hitTimes->Fill(time);
@@ -181,8 +188,8 @@ bool evPlot::Execute() {
           hitTimesVsCharges->SetPoint(hitNumber, time, charge);
         }
       }
-      time = skt_.tisk[cableNumber - 1];
     }
+    break;
   }
   case 2: {
     // tqreal branch
@@ -201,6 +208,7 @@ bool evPlot::Execute() {
     for (int hitNumber = 0; hitNumber < totalPMTsHit; ++hitNumber) {
       cableNumber = myTQReal->cables.at(hitNumber);
       charge = myTQReal->Q.at(hitNumber);
+      time = myTQReal->T.at(hitNumber);
       // Fill the histograms
       if (charge != 0) {
         hitTimes->Fill(time);
@@ -210,12 +218,13 @@ bool evPlot::Execute() {
           hitTimesVsCharges->SetPoint(hitNumber, time, charge);
         }
       }
-      time = myTQReal->T.at(hitNumber);
     }
+    break;
   }
   default: {
-    std::cout << "Invalid data source!" << std::endl;
-    return false;
+    Log(toolName + " ERROR: Invalid data source - " + std::to_string(dataSrc),
+        v_error, verbosity);
+    break;
   }
   }
 

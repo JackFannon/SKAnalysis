@@ -31,6 +31,7 @@ public:
   bool Initialise(std::string configfile, DataModel &data);
   bool Execute();
   bool Finalise();
+  std::string toolName;
 
   // Tool config
   std::string treeReaderName;
