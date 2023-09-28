@@ -1,6 +1,6 @@
 treeReaderName reader
 outputDir .
-dataSrc 0
+dataSrc 1
 Tmin 1000
 Tmax 2300
 Qmin 0
