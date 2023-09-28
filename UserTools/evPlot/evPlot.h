@@ -49,6 +49,9 @@ public:
   TCanvas *plotCanvas = nullptr;
   TVirtualPad *plotPad = nullptr;
 
+  // DEVELOPER STUFF TODO REMOVE
+  float maxT = -99999999.;
+
   // Histograms and graph
   TH1D *hitTimes = nullptr;
   TH1D *hitCharges = nullptr;

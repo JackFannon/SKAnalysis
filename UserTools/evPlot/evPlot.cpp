@@ -176,6 +176,10 @@ bool evPlot::Execute() {
       cableNumber = skchnl_.ihcab[hitNumber];
       charge = skq_.qisk[cableNumber - 1];
       time = skt_.tisk[cableNumber - 1];
+      // Find largest time
+      if (time > maxT) {
+        maxT = time;
+      }
       // Fill the histograms
       if (charge != 0) {
         hitTimes->Fill(time);
@@ -224,6 +228,8 @@ bool evPlot::Execute() {
     break;
   }
   }
+  // Print largest time
+  std::cout << "Max time: " << maxT << std::endl;
 
   // double minval = hitTimes->GetMinimum();
   // double maxval = hitTimes->GetMaximum();
