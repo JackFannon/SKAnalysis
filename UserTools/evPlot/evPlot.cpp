@@ -154,6 +154,7 @@ bool evPlot::Execute() {
     }
   }
   case 1: {
+    std::cout << "skt and skq common" << std::endl;
     // skt and skq commons
     totalPMTsHit = skq_.nqisk;
     // Loop over the hits
