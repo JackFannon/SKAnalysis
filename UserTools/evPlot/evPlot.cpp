@@ -59,20 +59,23 @@ bool evPlot::Initialise(std::string configfile, DataModel &data) {
   // No stats box
   gStyle->SetOptStat(0);
 
+  // Calculate the number of bins for the histograms
+  int Tbins = (Tmax - Tmin) / 10;
+  int Qbins = (Qmax - Qmin) * 10;
+
   // Initialise the histograms
-  hitTimes = new TH1D("hitTimes", "Hit Times", (Tmax - Tmin) / 10, Tmin, Tmax);
+  hitTimes = new TH1D("hitTimes", "Hit Times", Tbins, Tmin, Tmax);
   hitTimes->SetLineColor(38);
   hitTimes->SetFillColor(38);
   hitTimes->GetXaxis()->SetTitle("Time (ns)");
 
-  hitCharges =
-      new TH1D("hitCharges", "Hit Charges", (Qmax - Qmin) * 10, Qmin, Qmax);
+  hitCharges = new TH1D("hitCharges", "Hit Charges", Qbins, Qmin, Qmax);
   hitCharges->SetLineColor(46);
   hitCharges->SetFillColor(46);
   hitCharges->GetXaxis()->SetTitle("Charge (pC)");
 
   hitTimesAndCharges = new TH2D("hitTimesAndCharges", "Hit Times and Charges",
-                                650, 1000, 2300, 20, 0, 10);
+                                Tbins, Tmin, Tmax, Qbins, Qmin, Qmax);
   hitTimesAndCharges->GetXaxis()->SetTitle("Time (ns)");
   hitTimesAndCharges->GetYaxis()->SetTitle("Charge (pC)");
 
