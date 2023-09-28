@@ -141,6 +141,15 @@ bool evPlot::Execute() {
     for (int hitNumber = 0; hitNumber < totalPMTsHit; ++hitNumber) {
       cableNumber = sktqz_.icabiz[hitNumber];
       charge = sktqz_.qiskz[hitNumber];
+      // Fill the histograms
+      if (charge != 0) {
+        hitTimes->Fill(time);
+        hitCharges->Fill(charge);
+        hitTimesAndCharges->Fill(time, charge);
+        if (time > Tmin && time < Tmax && charge > Qmin) {
+          hitTimesVsCharges->SetPoint(hitNumber, time, charge);
+        }
+      }
       time = sktqz_.tiskz[hitNumber];
     }
   }
@@ -151,6 +160,15 @@ bool evPlot::Execute() {
     for (int hitNumber = 0; hitNumber < totalPMTsHit; ++hitNumber) {
       cableNumber = skchnl_.ihcab[hitNumber];
       charge = skq_.qisk[cableNumber - 1];
+      // Fill the histograms
+      if (charge != 0) {
+        hitTimes->Fill(time);
+        hitCharges->Fill(charge);
+        hitTimesAndCharges->Fill(time, charge);
+        if (time > Tmin && time < Tmax && charge > Qmin) {
+          hitTimesVsCharges->SetPoint(hitNumber, time, charge);
+        }
+      }
       time = skt_.tisk[cableNumber - 1];
     }
   }
@@ -161,6 +179,15 @@ bool evPlot::Execute() {
     for (int hitNumber = 0; hitNumber < totalPMTsHit; ++hitNumber) {
       cableNumber = myTQReal->cables.at(hitNumber);
       charge = myTQReal->Q.at(hitNumber);
+      // Fill the histograms
+      if (charge != 0) {
+        hitTimes->Fill(time);
+        hitCharges->Fill(charge);
+        hitTimesAndCharges->Fill(time, charge);
+        if (time > Tmin && time < Tmax && charge > Qmin) {
+          hitTimesVsCharges->SetPoint(hitNumber, time, charge);
+        }
+      }
       time = myTQReal->T.at(hitNumber);
     }
   }
@@ -168,16 +195,6 @@ bool evPlot::Execute() {
     std::cout << "Invalid data source!" << std::endl;
     return false;
   }
-  }
-
-  // Fill the histograms
-  if (charge != 0) {
-    hitTimes->Fill(time);
-    hitCharges->Fill(charge);
-    hitTimesAndCharges->Fill(time, charge);
-    if (time > Tmin && time < Tmax && charge > Qmin) {
-      hitTimesVsCharges->SetPoint(hitNumber, time, charge);
-    }
   }
 
   // double minval = hitTimes->GetMinimum();
