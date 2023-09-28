@@ -285,6 +285,7 @@ bool evPlot::Execute() {
   hitTimes->Reset();
   hitCharges->Reset();
   hitTimesAndCharges->Reset();
+  hitTimesVsCharges->Clear();
 
   return true;
 }
