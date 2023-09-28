@@ -111,6 +111,8 @@ bool evPlot::Initialise(std::string configfile, DataModel &data) {
 
 bool evPlot::Execute() {
 
+  maxT = 0;
+
   std::bitset<sizeof(int) * 8> triggerID;
   triggerID = skhead_.idtgsk;
   // initlialise string Trigs to store trigger strings in
