@@ -1,7 +1,7 @@
 treeReaderName reader
 outputDir .
-outputName skt_skq.pdf
-dataSrc 1
+outputName sktq.pdf
+dataSrc 0
 Tmin 1000
 Tmax 2300
 Qmin 0
