@@ -29,6 +29,7 @@ bool evPlot::Initialise(std::string configfile, DataModel &data) {
   // directory, etc.
   m_variables.Get("treeReaderName", treeReaderName);
   m_variables.Get("outputDir", outputDir);
+  m_variables.Get("dataSrc", dataSrc);
   m_variables.Get("Tmin", Tmin);
   m_variables.Get("Tmax", Tmax);
   m_variables.Get("Qmin", Qmin);
@@ -104,10 +105,6 @@ bool evPlot::Initialise(std::string configfile, DataModel &data) {
 
 bool evPlot::Execute() {
 
-  // Get the number of hit PMTs from the TQReal branch
-  // totalPMTsHit = myTQReal->cables.size();
-  totalPMTsHit = sktqz_.nqiskz;
-
   std::bitset<sizeof(int) * 8> triggerID;
   triggerID = skhead_.idtgsk;
   // initlialise string Trigs to store trigger strings in
@@ -136,25 +133,50 @@ bool evPlot::Execute() {
     return true;
   }
 
-  // Loop over the hit PMTs and fill the histograms, call the iterator pmtNumber
-  for (int pmtNumber = 0; pmtNumber < totalPMTsHit; ++pmtNumber) {
-    // cableNumber = myTQReal->cables.at(pmtNumber);
-    // charge = myTQReal->Q.at(pmtNumber);
-    // time = myTQReal->T.at(pmtNumber);
-    //
-    cableNumber = sktqz_.icabiz[pmtNumber];
-    charge = sktqz_.qiskz[cableNumber - 1];
-    time = sktqz_.tiskz[cableNumber - 1];
-    std::cout << "tiskz: " << sktqz_.tiskz[cableNumber - 1] << std::endl;
-    std::cout << "tisk: " << skt_.tisk[cableNumber - 1] << std::endl;
-    // Fill the histograms
-    if (charge != 0) {
-      hitTimes->Fill(time);
-      hitCharges->Fill(charge);
-      hitTimesAndCharges->Fill(time, charge);
-      if (time > Tmin && time < Tmax && charge > Qmin) {
-        hitTimesVsCharges->SetPoint(pmtNumber, time, charge);
-      }
+  switch (dataSrc) {
+  case 0: {
+    // sktq common
+    totalPMTsHit = sktqz_.nqiskz;
+    // Loop over the hits
+    for (int hitNumber = 0; hitNumber < totalPMTsHit; ++hitNumber) {
+      cableNumber = sktqz_.icabiz[hitNumber];
+      charge = sktqz_.qiskz[hitNumber];
+      time = sktqz_.tiskz[hitNumber];
+    }
+  }
+  case 1: {
+    // skt and skq commons
+    totalPMTsHit = skq_.nqisk;
+    // Loop over the hits
+    for (int hitNumber = 0; hitNumber < totalPMTsHit; ++hitNumber) {
+      cableNumber = skchnl_.ihcab[hitNumber];
+      charge = skq_.qisk[cableNumber - 1];
+      time = skt_.tisk[cableNumber - 1];
+    }
+  }
+  case 2: {
+    // tqreal branch
+    totalPMTsHit = myTQReal->cables.size();
+    // Loop over the hits
+    for (int hitNumber = 0; hitNumber < totalPMTsHit; ++hitNumber) {
+      cableNumber = myTQReal->cables.at(hitNumber);
+      charge = myTQReal->Q.at(hitNumber);
+      time = myTQReal->T.at(hitNumber);
+    }
+  }
+  default: {
+    std::cout << "Invalid data source!" << std::endl;
+    return false;
+  }
+  }
+
+  // Fill the histograms
+  if (charge != 0) {
+    hitTimes->Fill(time);
+    hitCharges->Fill(charge);
+    hitTimesAndCharges->Fill(time, charge);
+    if (time > Tmin && time < Tmax && charge > Qmin) {
+      hitTimesVsCharges->SetPoint(hitNumber, time, charge);
     }
   }
 
