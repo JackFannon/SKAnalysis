@@ -122,6 +122,8 @@ bool evPlot::Execute() {
     return true;
   }
 
+  std::cout << "dataSrc: " << dataSrc << std::endl;
+
   switch (dataSrc) {
   case 0: {
     // sktq common
