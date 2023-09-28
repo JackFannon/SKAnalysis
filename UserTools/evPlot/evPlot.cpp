@@ -266,9 +266,6 @@ bool evPlot::Execute() {
   // Append the plot to a pdf on a new page
   plotCanvas->Print(outputName.c_str());
 
-  // std::cout << "Hit enter to continue..." << std::endl;
-  // std::cin.get();
-
   // Clear histograms
   hitTimes->Reset();
   hitCharges->Reset();
@@ -278,8 +275,6 @@ bool evPlot::Execute() {
 }
 
 bool evPlot::Finalise() {
-
   plotCanvas->Print((outputName + "]").c_str());
-
   return true;
 }
