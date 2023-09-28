@@ -3,6 +3,6 @@ outputDir .
 outputName skt_skq.pdf
 dataSrc 1
 Tmin 1000
-Tmax 2300
+Tmax 1800
 Qmin 0
 Qmax 100
