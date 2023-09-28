@@ -24,7 +24,7 @@
 
 evDisp::evDisp() : Tool() {
   // get the name of the tool from its class name
-  oolName = type_name<decltype(this)>();
+  toolName = type_name<decltype(this)>();
   toolName.pop_back();
 }
 

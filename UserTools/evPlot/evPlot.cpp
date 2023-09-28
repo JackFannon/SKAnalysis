@@ -263,6 +263,7 @@ bool evPlot::Execute() {
   plotCanvas->cd(1);
   hitTimesAndCharges->Draw("COLZ");
   plotCanvas->cd(3);
+  gPad->SetLogy(1);
   hitTimesVsCharges->Draw("AP");
 
   hitTimesVsCharges->GetXaxis()->SetTitle("Time (ns)");
