@@ -46,7 +46,7 @@ bool evPlot::Initialise(std::string configfile, DataModel &data) {
   if (!m_variables.Get("verbose", m_verbose))
     m_verbose = 1;
 
-  // GStyle stuff
+  // --- GStyle stuff ---
   // No axis ticks
   gStyle->SetTickLength(0., "Y");
   // No stats box
@@ -145,6 +145,8 @@ bool evPlot::Execute() {
     cableNumber = sktqz_.icabiz[pmtNumber];
     charge = sktqz_.qiskz[cableNumber - 1];
     time = sktqz_.tiskz[cableNumber - 1];
+    std::cout << "tiskz: " << sktqz_.tiskz[cableNumber - 1] << std::endl;
+    std::cout << "tisk: " << skt_.tisk[cableNumber - 1] << std::endl;
     // Fill the histograms
     if (charge != 0) {
       hitTimes->Fill(time);
