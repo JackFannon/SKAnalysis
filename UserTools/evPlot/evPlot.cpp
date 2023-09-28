@@ -147,6 +147,10 @@ bool evPlot::Execute() {
       cableNumber = sktqz_.icabiz[hitNumber];
       charge = sktqz_.qiskz[hitNumber];
       time = sktqz_.tiskz[hitNumber];
+      // Find largest time
+      if (time > maxT) {
+        maxT = time;
+      }
       // Fill the histograms
       if (charge != 0) {
         hitTimes->Fill(time);
@@ -211,6 +215,10 @@ bool evPlot::Execute() {
       cableNumber = myTQReal->cables.at(hitNumber);
       charge = myTQReal->Q.at(hitNumber);
       time = myTQReal->T.at(hitNumber);
+      // Find largest time
+      if (time > maxT) {
+        maxT = time;
+      }
       // Fill the histograms
       if (charge != 0) {
         hitTimes->Fill(time);
