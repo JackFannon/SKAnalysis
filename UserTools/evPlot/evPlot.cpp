@@ -131,7 +131,7 @@ bool evPlot::Execute() {
       return true;
     }
     // If number of actual hits is less than 10000 then skip
-    if (sktqz_.nqiskz < 0) {
+    if (totalPMTsHit < 0) {
       std::cout << "Number of hits is less than 10000, skipping..."
                 << std::endl;
       return true;
@@ -161,7 +161,7 @@ bool evPlot::Execute() {
       return true;
     }
     // If number of actual hits is less than 10000 then skip
-    if (sktqz_.nqiskz < 0) {
+    if (totalPMTsHit < 0) {
       std::cout << "Number of hits is less than 10000, skipping..."
                 << std::endl;
       return true;
@@ -190,7 +190,7 @@ bool evPlot::Execute() {
       return true;
     }
     // If number of actual hits is less than 10000 then skip
-    if (sktqz_.nqiskz < 0) {
+    if (totalPMTsHit < 0) {
       std::cout << "Number of hits is less than 10000, skipping..."
                 << std::endl;
       return true;
