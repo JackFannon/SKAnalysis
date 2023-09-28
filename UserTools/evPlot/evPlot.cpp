@@ -260,7 +260,6 @@ bool evPlot::Execute() {
   plotPad->cd(2);
   gPad->SetLogx(1);
   hitCharges->Draw();
-  gPad->SetLogx(0);
   plotCanvas->cd(1);
   hitTimesAndCharges->Draw("COLZ");
   plotCanvas->cd(3);
