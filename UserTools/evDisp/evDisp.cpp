@@ -143,14 +143,14 @@ bool evDisp::Initialise(std::string configfile, DataModel &data) {
   gStyle->SetPalette(
       57); // kBird doesn't seem to exist in ROOT 5, do it ourselves
   //	Double_t stops[9] = { 0.0000, 0.1250, 0.2500, 0.3750, 0.5000, 0.6250,
-  //0.7500, 0.8750, 1.0000 };
+  // 0.7500, 0.8750, 1.0000 };
 
   //	Double_t stops[9] = {0.0000, 0.03210, 0.0642, 0.1383, 0.2260, 0.3333,
-  //0.4716, 0.6666, 1.0000 };  //XXX 	Double_t r[9]     = { 0.2082, 0.0592,
-  //0.0780, 0.0232, 0.1802, 0.5301, 0.8186, 0.9956, 0.9764 };  // see 	Double_t
-  //g[9]     = { 0.1664, 0.3599, 0.5041, 0.6419, 0.7178, 0.7492, 0.7328, 0.7862,
-  //0.9832 };  // below 	Double_t b[9]     = { 0.5293, 0.8684, 0.8385, 0.7914,
-  //0.6425, 0.4662, 0.3499, 0.1968, 0.0539 };
+  // 0.4716, 0.6666, 1.0000 };  //XXX 	Double_t r[9]     = { 0.2082, 0.0592,
+  // 0.0780, 0.0232, 0.1802, 0.5301, 0.8186, 0.9956, 0.9764 };  // see 	Double_t
+  // g[9]     = { 0.1664, 0.3599, 0.5041, 0.6419, 0.7178, 0.7492, 0.7328,
+  // 0.7862, 0.9832 };  // below 	Double_t b[9]     = { 0.5293, 0.8684,
+  // 0.8385, 0.7914, 0.6425, 0.4662, 0.3499, 0.1968, 0.0539 };
 
   // SuperScan-like colour pallette to replicate the colours used by the
   // official SK plots. p.e ranges that each stop represents are also the same
@@ -560,7 +560,7 @@ bool evDisp::Execute() {
       topCapHitMap->Set(top_cap_pmts_hit);
     } else {
       //			std::cout<<"setting dummy top cap
-      //hit"<<std::endl;
+      // hit"<<std::endl;
       topCapHitMap->SetPoint(0, -10, 10, 26.7);
       topCapHitMap->SetPoint(1, 1, 1, 1);
       topCapHitMap->SetPoint(2, 2, 2, 2);
@@ -572,7 +572,7 @@ bool evDisp::Execute() {
       bottomCapHitMap->Set(bottom_cap_pmts_hit);
     } else {
       //			std::cout<<"setting dummy bottom cap
-      //hit"<<std::endl;
+      // hit"<<std::endl;
       bottomCapHitMap->SetPoint(0, -10, 10, 26.7);
       bottomCapHitMap->SetPoint(1, 1, 1, 1);
       bottomCapHitMap->SetPoint(2, 2, 2, 2);
@@ -584,7 +584,7 @@ bool evDisp::Execute() {
       barrelHitMap->Set(barrel_pmts_hit);
     } else {
       //			std::cout<<"setting dummy barrel
-      //hit"<<std::endl;
+      // hit"<<std::endl;
       barrelHitMap->SetPoint(0, -10, 10, 26.7);
       barrelHitMap->SetPoint(1, 1, 1, 1);
       barrelHitMap->SetPoint(2, 2, 2, 2);

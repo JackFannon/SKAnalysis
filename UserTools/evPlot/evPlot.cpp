@@ -127,8 +127,6 @@ bool evPlot::Execute() {
     return true;
   }
 
-  std::cout << "dataSrc: " << dataSrc << std::endl;
-
   switch (dataSrc) {
   case 0: {
     // sktq common
@@ -161,7 +159,6 @@ bool evPlot::Execute() {
     break;
   }
   case 1: {
-    std::cout << "skt and skq common" << std::endl;
     // skt and skq commons
     totalPMTsHit = skq_.nqisk;
     if (totalPMTsHit == 0) {
