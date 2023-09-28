@@ -34,6 +34,7 @@ bool evPlot::Initialise(std::string configfile, DataModel &data) {
   // directory, etc.
   m_variables.Get("treeReaderName", treeReaderName);
   m_variables.Get("outputDir", outputDir);
+  m_variables.Get("outputName", outputName);
   m_variables.Get("dataSrc", dataSrc);
   m_variables.Get("Tmin", Tmin);
   m_variables.Get("Tmax", Tmax);
@@ -99,7 +100,7 @@ bool evPlot::Initialise(std::string configfile, DataModel &data) {
   plotPad->Divide(2, 1);
   plotCanvas->cd(2);
 
-  plotCanvas->Print("test_output.pdf[");
+  plotCanvas->Print((outputName + "[").c_str());
 
   // Get Header and TQReal branches
   myTreeReader->Get("Header", myHeader);
@@ -263,7 +264,7 @@ bool evPlot::Execute() {
   plotCanvas->Update();
 
   // Append the plot to a pdf on a new page
-  plotCanvas->Print("test_output.pdf");
+  plotCanvas->Print(outputName.c_str());
 
   // std::cout << "Hit enter to continue..." << std::endl;
   // std::cin.get();
@@ -278,7 +279,7 @@ bool evPlot::Execute() {
 
 bool evPlot::Finalise() {
 
-  plotCanvas->Print("test_output.pdf]");
+  plotCanvas->Print((outputName + "]").c_str());
 
   return true;
 }

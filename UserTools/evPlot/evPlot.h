@@ -36,6 +36,7 @@ public:
   // Tool config
   std::string treeReaderName;
   std::string outputDir;
+  std::string outputName;
   int dataSrc;
   int Tmin;
   int Tmax;
