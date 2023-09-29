@@ -263,17 +263,7 @@ bool evPlot::Execute() {
   gPad->SetLogx(1);
   hitCharges->Draw();
   plotCanvas->cd(1);
-
-  hitTimesAndCharges->Draw();
-  Double_t x1 = hitTimesAndCharges->GetXaxis()->GetXmin();
-  Double_t y1 = hitTimesAndCharges->GetYaxis()->GetXmin();
-  Double_t y2 = hitTimesAndCharges->GetYaxis()->GetXmax();
-  hitTimesAndCharges->GetYaxis()->SetNdivisions(3); // make sure no 2nd ticks
-  TGaxis *nya = new TGaxis(x1, y1, x1, y2, pow(10, -2), pow(10, 2), 3, "SG");
-  hitTimesAndCharges->GetYaxis()->SetLabelOffset(-100); // hide orig labels
-  nya->SetTickLength(0); // hide ticks, see option "S" above
-  nya->Draw();
-
+  hitTimesAndCharges->Draw("COLZ");
   plotCanvas->cd(3);
   gPad->SetLogy(1);
   hitTimesVsCharges->Draw("AP");
