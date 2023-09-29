@@ -183,6 +183,8 @@ bool evPlot::Execute() {
       cableNumber = skchnl_.ihcab[hitNumber];
       charge = skq_.qisk[cableNumber - 1];
       time = skt_.tisk[cableNumber - 1];
+      // Print time
+      std::cout << "Time: " << time << std::endl;
       // Fill the histograms
       if (charge != 0) {
         hitTimes->Fill(time);
