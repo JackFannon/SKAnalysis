@@ -4,8 +4,10 @@ FileListName myLoadFileList                                                  # r
 #inputDirectory "/disk02/data7/sk6/run/0869/086933/" # DATA DIRECTORY
 #filePattern "*.root" # ALL ROOT
 
-inputDirectory "/home/jfannon/disk03Data/"
+#inputDirectory "/home/jfannon/disk03Data/"
 #filePattern "mushower.root"
-filePattern "muonjobs/merged.root"
+
+inputDirectory "/home/jfannon/disk03Data/muonjobs/"
+filePattern "merged.root"
 
 useRegex 0
