@@ -262,11 +262,11 @@ bool evPlot::Execute() {
   gPad->SetLogx(1);
   hitCharges->Draw();
   plotCanvas->cd(1);
+  gPad->SetLogy(1);
   hitTimesAndCharges->Draw("COLZ");
   plotCanvas->cd(3);
   gPad->SetLogy(1);
   hitTimesVsCharges->Draw("AP");
-  gPad->SetLogy(1);
 
   hitTimesVsCharges->GetXaxis()->SetTitle("Time (ns)");
   hitTimesVsCharges->GetYaxis()->SetTitle("Charge (pC)");
