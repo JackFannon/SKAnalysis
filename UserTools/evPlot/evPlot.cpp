@@ -117,6 +117,12 @@ bool evPlot::Initialise(std::string configfile, DataModel &data) {
 
 bool evPlot::Execute() {
 
+  // DEVELOPER STUFF TODO REMOVE
+  maxT = -99999999.;
+  minT = 99999999.;
+  maxQ = -99999999.;
+  minQ = 99999999.;
+
   // Got to declare the TGraph here; there is no function to delete all points
   // from a TGraph. Have to delete the pointer and reallocate.
   TGraph *hitTimesVsCharges = new TGraph();
