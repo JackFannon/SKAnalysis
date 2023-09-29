@@ -36,6 +36,7 @@ bool evPlot::Initialise(std::string configfile, DataModel &data) {
   m_variables.Get("outputDir", outputDir);
   m_variables.Get("outputName", outputName);
   m_variables.Get("dataSrc", dataSrc);
+  m_variables.Get("maskTriggers", maskTriggers);
   m_variables.Get("Tmin", Tmin);
   m_variables.Get("Tmax", Tmax);
   m_variables.Get("Qmin", Qmin);
@@ -130,7 +131,7 @@ bool evPlot::Execute() {
   }
 
   // Only pass if the HE and OD triggers are set
-  if (!(triggerID.test(1) && triggerID.test(3))) {
+  if (!(triggerID.test(1) && triggerID.test(3)) && maskTriggers) {
     return true;
   }
 

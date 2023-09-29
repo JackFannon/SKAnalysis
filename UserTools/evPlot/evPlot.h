@@ -38,6 +38,7 @@ public:
   std::string outputDir;
   std::string outputName;
   int dataSrc;
+  int maskTriggers;
   int Tmin;
   int Tmax;
   int Qmin;
