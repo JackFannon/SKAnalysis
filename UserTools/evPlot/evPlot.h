@@ -54,11 +54,17 @@ public:
   // DEVELOPER STUFF TODO REMOVE
   float maxT = -99999999.;
   float minT = 99999999.;
+  float maxQ = -99999999.;
+  float minQ = 99999999.;
 
   // Histograms and graph
   TH1D *hitTimes = nullptr;
   TH1D *hitCharges = nullptr;
-  TH2D *hitTimesAndCharges = nullptr;
+  // TH2D *hitTimesAndCharges = nullptr;
+
+  // Vector to hold the hit times and charges
+  std::vector<float> timeVec;
+  std::vector<float> chargeVec;
 
   // Branches
   const Header *myHeader = nullptr;

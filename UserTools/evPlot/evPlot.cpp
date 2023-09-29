@@ -2,6 +2,7 @@
 
 #include "TError.h"
 #include "TGaxis.h"
+#include "TH2.h"
 #include "TROOT.h"
 #include "TStyle.h"
 
@@ -76,11 +77,12 @@ bool evPlot::Initialise(std::string configfile, DataModel &data) {
   hitCharges->SetFillColor(46);
   hitCharges->GetXaxis()->SetTitle("Charge (pC)");
 
-  hitTimesAndCharges =
-      new TH2D("hitTimesAndCharges", "Hit Times and Charges", Tbins / 2, Tmin,
-               Tmax, Qbins / 100, Qmin, 10 * Qmax);
-  hitTimesAndCharges->GetXaxis()->SetTitle("Time (ns)");
-  hitTimesAndCharges->GetYaxis()->SetTitle("Charge (pC)");
+  // hitTimesAndCharges =
+  // new TH2D("hitTimesAndCharges", "Hit Times and Charges", Tbins / 2, Tmin,
+  // Tmax,
+  //           Qbins / 100, Qmin, 10 * Qmax);
+  // hitTimesAndCharges->GetXaxis()->SetTitle("Time (ns)");
+  // hitTimesAndCharges->GetYaxis()->SetTitle("Charge (pC)");
 
   /* Create the canvas and divide it up
     -------------------
@@ -159,7 +161,12 @@ bool evPlot::Execute() {
       if (charge != 0) {
         hitTimes->Fill(time);
         hitCharges->Fill(charge);
-        hitTimesAndCharges->Fill(time, charge);
+        timeVec.push_back(time);
+        chargeVec.push_back(charge);
+        // Find max charge
+        if (charge > maxQ) {
+          maxQ = charge;
+        }
         if (time > Tmin && time < Tmax && charge > Qmin) {
           hitTimesVsCharges->SetPoint(hitNumber, time, charge);
         }
@@ -189,7 +196,12 @@ bool evPlot::Execute() {
       if (charge != 0) {
         hitTimes->Fill(time);
         hitCharges->Fill(charge);
-        hitTimesAndCharges->Fill(time, charge);
+        timeVec.push_back(time);
+        chargeVec.push_back(charge);
+        // Find max charge
+        if (charge > maxQ) {
+          maxQ = charge;
+        }
         if (time > Tmin && time < Tmax && charge > Qmin) {
           hitTimesVsCharges->SetPoint(hitNumber, time, charge);
         }
@@ -220,7 +232,12 @@ bool evPlot::Execute() {
       if (charge != 0) {
         hitTimes->Fill(time);
         hitCharges->Fill(charge);
-        hitTimesAndCharges->Fill(time, charge);
+        timeVec.push_back(time);
+        chargeVec.push_back(charge);
+        // Find max charge
+        if (charge > maxQ) {
+          maxQ = charge;
+        }
         if (time > Tmin && time < Tmax && charge > Qmin) {
           hitTimesVsCharges->SetPoint(hitNumber, time, charge);
         }
@@ -233,6 +250,15 @@ bool evPlot::Execute() {
         v_error, verbosity);
     break;
   }
+  }
+
+  TH2D *hitTimesAndCharges =
+      new TH2D("hitTimesAndCharges", "Hit Times and Charges", 100, 0, Tmax, 100,
+               0, maxQ);
+
+  // Loop over timeVec and chargeVec and fill hitTimesAndCharges
+  for (int i = 0; i < timeVec.size(); i++) {
+    hitTimesAndCharges->Fill(timeVec.at(i), chargeVec.at(i));
   }
 
   // Draw the histograms
