@@ -134,6 +134,9 @@ bool evPlot::Execute() {
     return true;
   }
 
+  std::cout << "Datasrc is " << dataSrc << std::endl;
+  std::cout << "myTQReal.nhits: " << myTQReal->nhits << std::endl;
+
   switch (dataSrc) {
   case 0: {
     // sktq common
