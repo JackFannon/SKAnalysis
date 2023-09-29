@@ -287,7 +287,9 @@ bool evPlot::Execute() {
   // Clear histograms
   hitTimes->Reset();
   hitCharges->Reset();
-  hitTimesAndCharges->Reset();
+
+  // Delete 2D hist
+  delete hitTimesAndCharges;
 
   // Delete the TGraph
   delete hitTimesVsCharges;
