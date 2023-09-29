@@ -1,7 +1,7 @@
 treeReaderName reader
 outputDir .
 outputName mc_mushower.pdf
-dataSrc 1
+dataSrc 2
 Tmin 0
 Tmax 1800
 Qmin 0
