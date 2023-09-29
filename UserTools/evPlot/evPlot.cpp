@@ -74,8 +74,9 @@ bool evPlot::Initialise(std::string configfile, DataModel &data) {
   hitCharges->SetFillColor(46);
   hitCharges->GetXaxis()->SetTitle("Charge (pC)");
 
-  hitTimesAndCharges = new TH2D("hitTimesAndCharges", "Hit Times and Charges",
-                                Tbins / 2, Tmin, Tmax, Qbins / 100, Qmin, Qmax);
+  hitTimesAndCharges =
+      new TH2D("hitTimesAndCharges", "Hit Times and Charges", Tbins / 2, Tmin,
+               Tmax, Qbins / 100, Qmin, 10 * Qmax);
   hitTimesAndCharges->GetXaxis()->SetTitle("Time (ns)");
   hitTimesAndCharges->GetYaxis()->SetTitle("Charge (pC)");
 
