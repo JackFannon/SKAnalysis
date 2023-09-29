@@ -1,6 +1,7 @@
 #include "evPlot.h"
 
 #include "TError.h"
+#include "TGaxis.h"
 #include "TROOT.h"
 #include "TStyle.h"
 
@@ -262,8 +263,19 @@ bool evPlot::Execute() {
   gPad->SetLogx(1);
   hitCharges->Draw();
   plotCanvas->cd(1);
-  gPad->SetLogy(1);
   hitTimesAndCharges->Draw("COLZ");
+
+  Double_t x1 = hitTimesAndCharges->GetXaxis()->GetXmin();
+  Double_t y1 = hitTimesAndCharges->GetYaxis()->GetXmin();
+  Double_t y2 = hitTimesAndCharges->GetYaxis()->GetXmax();
+  hitTimesAndCharges->GetYaxis()->SetNdivisions(20); // make sure no 2nd ticks
+  Double_t fromy = -14, toy = 6;
+  TGaxis *nya = new TGaxis(x1, y1, x1, y2, TMath::Power(10, fromy),
+                           TMath::Power(10, toy), 20, "SG");
+  hitTimesAndCharges->GetYaxis()->SetLabelOffset(-100); // hide orig labels
+  nya->SetTickLength(0); // hide ticks, see option "S" above
+  nya->Draw();
+
   plotCanvas->cd(3);
   gPad->SetLogy(1);
   hitTimesVsCharges->Draw("AP");
