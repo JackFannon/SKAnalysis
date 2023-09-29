@@ -239,7 +239,6 @@ bool evPlot::Execute() {
   plotPad->cd(1);
   hitTimes->Draw();
   plotPad->cd(2);
-  gPad->SetLogx(1);
   hitCharges->Draw();
   plotCanvas->cd(1);
   hitTimesAndCharges->Draw("COLZ");
