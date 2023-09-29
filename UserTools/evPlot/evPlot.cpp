@@ -200,6 +200,7 @@ bool evPlot::Execute() {
   case 2: {
     // tqreal branch
     totalPMTsHit = myTQReal->cables.size();
+    std::cout << totalPMTsHit << std::endl;
     if (totalPMTsHit == 0) {
       std::cout << "No PMTs hit in this event!" << std::endl;
       return true;
