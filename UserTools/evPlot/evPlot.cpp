@@ -291,6 +291,10 @@ bool evPlot::Execute() {
   // Delete 2D hist
   delete hitTimesAndCharges;
 
+  // Clear the vectors
+  timeVec.clear();
+  chargeVec.clear();
+
   // Delete the TGraph
   delete hitTimesVsCharges;
 
