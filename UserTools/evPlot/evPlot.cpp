@@ -152,6 +152,10 @@ bool evPlot::Execute() {
       cableNumber = sktqz_.icabiz[hitNumber];
       charge = sktqz_.qiskz[hitNumber];
       time = sktqz_.tiskz[hitNumber];
+      // Find the smallest time
+      if (time < minT) {
+        minT = time;
+      }
       // Find largest time
       if (time > maxT) {
         maxT = time;
@@ -186,6 +190,10 @@ bool evPlot::Execute() {
       cableNumber = skchnl_.ihcab[hitNumber];
       charge = skq_.qisk[cableNumber - 1];
       time = skt_.tisk[cableNumber - 1];
+      // Find the smallest time
+      if (time < minT) {
+        minT = time;
+      }
       // Find largest time
       if (time > maxT) {
         maxT = time;
@@ -220,6 +228,10 @@ bool evPlot::Execute() {
       cableNumber = myTQReal->cables.at(hitNumber);
       charge = myTQReal->Q.at(hitNumber);
       time = myTQReal->T.at(hitNumber);
+      // Find the smallest time
+      if (time < minT) {
+        minT = time;
+      }
       // Find largest time
       if (time > maxT) {
         maxT = time;
@@ -244,6 +256,8 @@ bool evPlot::Execute() {
   }
   // Print largest time
   std::cout << "Max time: " << maxT << std::endl;
+  // Print smallest time
+  std::cout << "Min time: " << minT << std::endl;
 
   // double minval = hitTimes->GetMinimum();
   // double maxval = hitTimes->GetMaximum();

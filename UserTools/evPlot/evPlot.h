@@ -52,6 +52,7 @@ public:
 
   // DEVELOPER STUFF TODO REMOVE
   float maxT = -99999999.;
+  float minT = 99999999.;
 
   // Histograms and graph
   TH1D *hitTimes = nullptr;
