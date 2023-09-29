@@ -136,9 +136,6 @@ bool evPlot::Execute() {
     return true;
   }
 
-  std::cout << "Datasrc is " << dataSrc << std::endl;
-  std::cout << "myTQReal.nhits: " << myTQReal->nhits << std::endl;
-
   switch (dataSrc) {
   case 0: {
     // sktq common
@@ -188,8 +185,6 @@ bool evPlot::Execute() {
       cableNumber = skchnl_.ihcab[hitNumber];
       charge = skq_.qisk[cableNumber - 1];
       time = skt_.tisk[cableNumber - 1];
-      // Print time
-      std::cout << "Time: " << time << std::endl;
       // Fill the histograms
       if (charge != 0) {
         hitTimes->Fill(time);
@@ -239,22 +234,6 @@ bool evPlot::Execute() {
     break;
   }
   }
-  // Print largest time
-  std::cout << "Max time: " << maxT << std::endl;
-  // Print smallest time
-  std::cout << "Min time: " << minT << std::endl;
-
-  // double minval = hitTimes->GetMinimum();
-  // double maxval = hitTimes->GetMaximum();
-  // std::cout << "Minval: " << minval << std::endl;
-  // std::cout << "Maxval: " << maxval << std::endl;
-  // hitTimes->GetXaxis()->SetRangeUser(minval, maxval);
-  // hitTimesAndCharges->GetXaxis()->SetRangeUser(minval, maxval);
-
-  // minval = hitCharges->GetMinimum();
-  // maxval = hitCharges->GetMaximum();
-  // hitCharges->GetXaxis()->SetRangeUser(minval, maxval);
-  // hitTimesAndCharges->GetYaxis()->SetRangeUser(minval, maxval);
 
   // Draw the histograms
   plotPad->cd(1);
