@@ -2,7 +2,7 @@ treeReaderName reader
 outputDir .
 outputName mc_mushower.pdf
 dataSrc 2
-maskTriggers 0
+maskTriggers 1
 Tmin 0
 Tmax 1800
 Qmin 0
