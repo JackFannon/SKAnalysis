@@ -1,6 +1,6 @@
 treeReaderName reader
 outputDir .
-outputName skt_skq.pdf
+outputName mc_mushower.pdf
 dataSrc 1
 Tmin 0
 Tmax 1800

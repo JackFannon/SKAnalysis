@@ -117,9 +117,6 @@ bool evPlot::Execute() {
   // from a TGraph. Have to delete the pointer and reallocate.
   TGraph *hitTimesVsCharges = new TGraph();
 
-  maxT = -9999999.;
-  minT = 9999999.;
-
   std::bitset<sizeof(int) * 8> triggerID;
   triggerID = skhead_.idtgsk;
   // initlialise string Trigs to store trigger strings in
@@ -156,14 +153,6 @@ bool evPlot::Execute() {
       cableNumber = sktqz_.icabiz[hitNumber];
       charge = sktqz_.qiskz[hitNumber];
       time = sktqz_.tiskz[hitNumber];
-      // Find the smallest time
-      if (time < minT) {
-        minT = time;
-      }
-      // Find largest time
-      if (time > maxT) {
-        maxT = time;
-      }
       // Fill the histograms
       if (charge != 0) {
         hitTimes->Fill(time);
@@ -194,14 +183,6 @@ bool evPlot::Execute() {
       cableNumber = skchnl_.ihcab[hitNumber];
       charge = skq_.qisk[cableNumber - 1];
       time = skt_.tisk[cableNumber - 1];
-      // Find the smallest time
-      if (time < minT) {
-        minT = time;
-      }
-      // Find largest time
-      if (time > maxT) {
-        maxT = time;
-      }
       // Fill the histograms
       if (charge != 0) {
         hitTimes->Fill(time);
@@ -232,14 +213,6 @@ bool evPlot::Execute() {
       cableNumber = myTQReal->cables.at(hitNumber);
       charge = myTQReal->Q.at(hitNumber);
       time = myTQReal->T.at(hitNumber);
-      // Find the smallest time
-      if (time < minT) {
-        minT = time;
-      }
-      // Find largest time
-      if (time > maxT) {
-        maxT = time;
-      }
       // Fill the histograms
       if (charge != 0) {
         hitTimes->Fill(time);
