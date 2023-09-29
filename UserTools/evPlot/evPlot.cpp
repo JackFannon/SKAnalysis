@@ -263,8 +263,8 @@ bool evPlot::Execute() {
   gPad->SetLogx(1);
   hitCharges->Draw();
   plotCanvas->cd(1);
-  hitTimesAndCharges->Draw("COLZ");
 
+  hitTimesAndCharges->Draw();
   Double_t x1 = hitTimesAndCharges->GetXaxis()->GetXmin();
   Double_t y1 = hitTimesAndCharges->GetYaxis()->GetXmin();
   Double_t y2 = hitTimesAndCharges->GetYaxis()->GetXmax();
