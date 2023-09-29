@@ -266,6 +266,7 @@ bool evPlot::Execute() {
   plotCanvas->cd(3);
   gPad->SetLogy(1);
   hitTimesVsCharges->Draw("AP");
+  gPad->SetLogy(1);
 
   hitTimesVsCharges->GetXaxis()->SetTitle("Time (ns)");
   hitTimesVsCharges->GetYaxis()->SetTitle("Charge (pC)");
