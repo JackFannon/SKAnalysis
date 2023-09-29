@@ -7,7 +7,7 @@ readerName reader
 skFile 1
 skoptn 31,30,26,25
 #firstEntry 1000                 # first TTree entry to process
-maxEntries 100000                     # max num input entries to process
+maxEntries 500                     # max num input entries to process
 skbadopt 23
 SK_GEOMETRY 4
 skipPedestals 1
