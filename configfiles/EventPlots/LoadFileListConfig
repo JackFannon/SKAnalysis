@@ -1,7 +1,7 @@
 verbosity 100
 FileListName myLoadFileList                                                  # required argument
 
-inputDirectory "/disk02/data7/sk6/run/0869/086933/rfm_run086933.000458.root"
+inputDirectory "/disk02/data7/sk6/run/0869/086933/"
 
 filePattern "*.root"
 
