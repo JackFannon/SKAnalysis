@@ -5,6 +5,7 @@ FileListName myLoadFileList                                                  # r
 #filePattern "*.root" # ALL ROOT
 
 inputDirectory "/home/jfannon/disk03Data/"
-filePattern "mushower.root"
+#filePattern "mushower.root"
+filePattern "muonjobs/merged.root"
 
 useRegex 0
