@@ -269,8 +269,7 @@ bool evPlot::Execute() {
   Double_t y1 = hitTimesAndCharges->GetYaxis()->GetXmin();
   Double_t y2 = hitTimesAndCharges->GetYaxis()->GetXmax();
   hitTimesAndCharges->GetYaxis()->SetNdivisions(20); // make sure no 2nd ticks
-  Double_t fromy = -14, toy = 6;
-  TGaxis *nya = new TGaxis(x1, y1, x1, y2, pow(10, Qmin), Qmax, 20, "SG");
+  TGaxis *nya = new TGaxis(x1, y1, x1, y2, pow(10, 0), pow(10, 2), 20, "SG");
   hitTimesAndCharges->GetYaxis()->SetLabelOffset(-100); // hide orig labels
   nya->SetTickLength(0); // hide ticks, see option "S" above
   nya->Draw();
