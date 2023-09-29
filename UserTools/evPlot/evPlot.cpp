@@ -80,8 +80,6 @@ bool evPlot::Initialise(std::string configfile, DataModel &data) {
   hitTimesAndCharges->GetXaxis()->SetTitle("Time (ns)");
   hitTimesAndCharges->GetYaxis()->SetTitle("Charge (pC)");
 
-  hitTimesVsCharges = new TGraph();
-
   /* Create the canvas and divide it up
     -------------------
    | ----------------- |
@@ -114,6 +112,10 @@ bool evPlot::Initialise(std::string configfile, DataModel &data) {
 }
 
 bool evPlot::Execute() {
+
+  // Got to declare the TGraph here; there is no function to delete all points
+  // from a TGraph. Have to delete the pointer and reallocate.
+  TGraph *hitTimesVsCharges = new TGraph();
 
   maxT = -9999999.;
   minT = 9999999.;
@@ -301,7 +303,9 @@ bool evPlot::Execute() {
   hitTimes->Reset();
   hitCharges->Reset();
   hitTimesAndCharges->Reset();
-  hitTimesVsCharges->Clear();
+
+  // Delete the TGraph
+  delete hitTimesVsCharges;
 
   return true;
 }

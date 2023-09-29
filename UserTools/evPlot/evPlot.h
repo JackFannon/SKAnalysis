@@ -58,7 +58,6 @@ public:
   TH1D *hitTimes = nullptr;
   TH1D *hitCharges = nullptr;
   TH2D *hitTimesAndCharges = nullptr;
-  TGraph *hitTimesVsCharges = nullptr;
 
   // Branches
   const Header *myHeader = nullptr;
