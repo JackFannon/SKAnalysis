@@ -114,7 +114,8 @@ bool evPlot::Initialise(std::string configfile, DataModel &data) {
 
 bool evPlot::Execute() {
 
-  maxT = 0;
+  maxT = -9999999.;
+  minT = 9999999.;
 
   std::bitset<sizeof(int) * 8> triggerID;
   triggerID = skhead_.idtgsk;
